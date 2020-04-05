@@ -1,0 +1,147 @@
+#topBorderPane {
+-fx-background-color: #28313b 74%;
+/*-fx-background-color: linear-gradient(to bottom right, #485461 0%, #28313b 74%);*/
+}
+
+#backButton {
+	-fx-background-color: transparent;
+	-fx-text-fill:transparent;
+	-fx-background-image: url("../assets/backArrow.png");
+	-fx-background-size:contain;
+	-fx-background-repeat:no-repeat;
+	-fx-background-position: center;
+}
+#backButtonSeperator > *.line {
+	-fx-border-style:solid;
+	-fx-border-width:1px;
+	-fx-border-color:#4A5663;
+}
+.seperatorMenu > *.line{
+	-fx-border-style:solid;
+	-fx-border-width:1px;
+	-fx-border-color:#4A5663;
+}
+.textMenu{
+	-fx-font-size: 20px;
+	-fx-font-family:valera;
+}
+.jfx-slider .colored-track{
+	-fx-background-color:#ABB37B;
+}
+.jfx-slider .animated-thumb{
+	-fx-background-color:#E8B7C5;
+	}
+.jfx-slider .thumb {
+	-fx-background-color:#FFD9D6;
+}
+.jfx-slider .track {
+	-fx-background-color:#FFD9D6;
+}
+/*Main text */
+.jfx-combo-box{
+	-fx-prompt-text-fill:#ABB37B;
+	-fx-text-fill:#ABB37B;
+	-fx-font-family:valera;
+	-fx-font-size:18px;
+}
+/*Label text */
+.jfx-combo-box .label {
+	-fx-text-fill:#FFD9D6;
+	-fx-text-family:valera
+}
+/*Background of the list */
+.jfx-combo-box .cell {
+	-fx-background-color:#28313b 74%;
+}
+/*Background of the cell in which the label is getting hovered */
+.jfx-combo-box .cell:hover {
+	-fx-background-color:#ABB37B;
+}
+/*Change the font weight of the label on hovering */
+.jfx-combo-box .cell:hover .label{
+	-fx-font-weight:bold;
+}
+/*Change the color of the arrow */
+.jfx-combo-box > .arrow-button > .arrow{
+	-fx-background-color: #ABB37B;
+}
+/*Change the color of the arrow when hovering */
+.jfx-combo-box:hover > .arrow-button > .arrow{
+	-fx-background-color: #FFD9D6;
+}
+/*change the initial color  of the text field in the menu when hovering */
+.jfx-combo-box:hover{
+	-fx-prompt-text-fill:#FFD9D6;
+}
+.jfx-combo-box:hover .input-line{
+	-fx-background-color:#FFD9D6;
+}
+
+#sortButton{
+	-fx-background-color: transparent;
+	-fx-text-fill:#FFD9D6;
+	-fx-font-size:18px;
+	-fx-font-family:valera;
+}
+#footBorder{
+	-fx-background-color:#28313b 74%; 
+}
+
+/*-fx-background-color:#305580 74%; */
+/* .menu-button{
+	-fx-background-color:#3B6380;
+	-fx-padding:1px;
+}
+Change the color on hover 
+.menu-button:hover {
+	-fx-background-color: #2185CC;
+	}
+	
+.menu-button > .arrow-button > .arrow {
+	-fx-background-color:white;
+
+}
+.menu-button .menu-item{
+	-fx-background-color:white;
+}
+
+.menu-button .menu-item:hover{
+	-fx-cursor: hand;
+	-fx-background-color:#2185CC;
+
+}
+.menu-button .menu-item .label{
+	-fx-font-size:18px;
+	-fx-text-fill:black;
+}
+#lastSubMenu{
+	-fx-background-radius:0 0 5 5;
+}
+.menu-button .context-menu {
+	-fx-pref-width:221px;
+	-fx-padding:0px;
+	-fx-background-radius:0 0 5 5;
+}
+.slider .track {
+	-fx-background-color:#2185CC;
+}
+.slider .thumb {
+	-fx-background-color:#3B6380;
+	-fx-cursor: hand;
+	}
+.button {
+	-fx-text-fill:#FFFF96;
+	-fx-font-family:Arial;
+	-fx-font-size: 18px;
+	-fx-opacity:1.0;
+}
+
+
+	/*.menu-button .context-menu{
+	-fx-background-radius: 10px;
+	-fx-pref-width:143px;
+} */
+
+/*Change the color of the arrow */
+
+
