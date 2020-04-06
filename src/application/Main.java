@@ -21,14 +21,13 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			scene.widthProperty().addListener(e ->{
-				System.out.println(scene.getWidth() + "Widht");
+				System.out.println(scene.getWidth() + "Widht"); //Debug line
 			});
 			scene.heightProperty().addListener(e ->{
-				System.out.println(scene.getHeight());
+				System.out.println(scene.getHeight()); //Debug line
 			});
 			primaryStage.setMinWidth(1370);
 			primaryStage.setMinHeight(900);
-			primaryStage.getIcons().add(new Image("file:backArrow.png"));
 			primaryStage.setTitle("Sorting Visulizer");
 			primaryStage.setScene(scene);
 			primaryStage.show();

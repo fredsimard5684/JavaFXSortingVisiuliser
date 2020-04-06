@@ -2,15 +2,6 @@
 -fx-background-color: #28313b 74%;
 /*-fx-background-color: linear-gradient(to bottom right, #485461 0%, #28313b 74%);*/
 }
-
-#backButton {
-	-fx-background-color: transparent;
-	-fx-text-fill:transparent;
-	-fx-background-image: url("../assets/backArrow.png");
-	-fx-background-size:contain;
-	-fx-background-repeat:no-repeat;
-	-fx-background-position: center;
-}
 #backButtonSeperator > *.line {
 	-fx-border-style:solid;
 	-fx-border-width:1px;
