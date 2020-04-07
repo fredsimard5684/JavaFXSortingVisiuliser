@@ -6,19 +6,28 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRippler;
+import com.jfoenix.controls.JFXSlider;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 public class Controller implements Initializable {
 	
@@ -34,10 +43,15 @@ public class Controller implements Initializable {
 	private JFXButton sortButton;
 	// Text menu
 	private Text text;
-	private SequentialTransition sq;
 	@FXML
 	private HBox backButtonBox;
-
+	@FXML
+	private JFXSlider slider;
+	@FXML
+	private Pane diagramPane;
+	private int[] copyArrayGenerated;
+	private SequentialTransition sq;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Center the imageview
@@ -67,18 +81,20 @@ public class Controller implements Initializable {
 		rippler.setLayoutY(backButtonBox.getLayoutY());
 		rippler.setMaskType(JFXRippler.RipplerMask.CIRCLE);
 		titlePane.getChildren().add(rippler);
+		slider.setValue(0);
 	}
-
+	@FXML
 	// CSS doesnt work when hovering a text element
 	public void hoverInTextMenu(MouseEvent e) {
 		text = (Text) e.getSource();
 		text.setFill(javafx.scene.paint.Paint.valueOf("#FFD9D6"));
 	}
-
+	@FXML
 	public void hoverOutTextMenu(MouseEvent e) {
 		text = (Text) e.getSource();
 		text.setFill(javafx.scene.paint.Paint.valueOf("#ABB37B"));
 	}
+	@FXML
 	//Set a bouncing animation on the sort button
 	public void translationOfSortButton() {
 		TranslateTransition firstBounce = new TranslateTransition(javafx.util.Duration.seconds(0.2), sortButton);
@@ -105,13 +121,59 @@ public class Controller implements Initializable {
 		});
 		sq.play();
 	}
-
+	@FXML
+	//When clicking on the generate a new array button
+	public void handleClickArrayGeneration(MouseEvent e) {
+		diagramPane.getChildren().clear();
+		fadeAnimation(e);
+		copyArrayGenerated = generateArray((int) slider.getValue());
+		createBars(copyArrayGenerated);
+	}
+	@FXML
+	public void handleSlidderDrag(MouseEvent e) {
+		diagramPane.getChildren().clear();
+		copyArrayGenerated = generateArray((int) slider.getValue());
+		createBars(copyArrayGenerated);
+	}
+	
+	@FXML
 	public void fadeAnimation(MouseEvent e) {
-		FadeTransition ft = new FadeTransition(javafx.util.Duration.seconds(0.5), text);
-		ft.setFromValue(1.0);
-		ft.setToValue(0.1);
-		ft.setCycleCount(2);
-		ft.setAutoReverse(true);
-		ft.play();
+		text = (Text) e.getSource();
+		FadeTransition transition = new FadeTransition();
+		transition.setNode(text);
+		transition.setDuration(Duration.seconds(0.5));
+		transition.setFromValue(1);
+		transition.setToValue(0);
+		transition.setCycleCount(2);
+		transition.setAutoReverse(true);
+		transition.play();
+	}
+	//Method that generates a new array
+	public int[] generateArray(int size) {
+		int sizeOfTheArray = size * 3 + 4;
+		int[] arrayGenerate = new int[sizeOfTheArray];
+		System.out.println(arrayGenerate.length); //Debug
+		for (int i = 0; i < arrayGenerate.length; i++) {
+			int integerGenerator = (int) (Math.random() * 700 + 1);
+			arrayGenerate[i] = integerGenerator;
+		}	
+		return arrayGenerate;
+	}
+	public void createBars(int[] array) {
+		//Create a new label for each value in the array
+		for (int i = 0; i < array.length; i++) {
+			Label label = new Label();
+			//The height is equal to the value of the i postion in the array
+			label.setPrefHeight(array[i]);
+			//Set the label style
+			label.setPrefWidth(950/ array.length);
+			label.setStyle("-fx-background-color:red");
+			label.setText(array.length < 45 ? String.valueOf(array[i]): null);
+			label.setTextFill(Paint.valueOf("white"));
+			label.setAlignment(Pos.BOTTOM_CENTER);
+			int marginRight = (array.length < 100 ? marginRight = 3: array.length < 300? 2:1);
+			FlowPane.setMargin(label, new Insets(0, 0, 0, marginRight));
+			diagramPane.getChildren().add(label);
+		}
 	}
 }
