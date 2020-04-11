@@ -31,6 +31,7 @@ public class BubbleSort {
 					arrayToSort[j] = arrayToSort[j + 1];
 					arrayToSort[j + 1] = temp;
 					animation.add(new AnimationList(j, j + 1, "SWAP"));
+					animation.add(new AnimationList(j, j + 1, "COMPARE"));
 				}
 				animation.add(new AnimationList(j, j + 1, "REMOVE_FOCUS"));
 			} //End of internal loop
@@ -48,35 +49,33 @@ public class BubbleSort {
 			@Override
 			protected Void call() throws Exception {
 				for (AnimationList animationList : animation) {
-					Rectangle firstLabel = (Rectangle) flowPane.getChildren().get(animationList.getFirstValue());
-					Rectangle secondLabel = (Rectangle) flowPane.getChildren().get(animationList.getSecondValue());
+					Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animationList.getFirstValue());
+					Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animationList.getSecondValue());
 					if (animationList.getSortStatus().equals("COMPARE")) {
 						Platform.runLater( ()-> {					
-							firstLabel.setFill(Paint.valueOf("green"));;
-							secondLabel.setFill(Paint.valueOf("green"));
+							firstRect.setFill(Paint.valueOf("green"));;
+							secondRect.setFill(Paint.valueOf("green"));
 						});
-						Thread.sleep(1000);
+						Thread.sleep(500);
 					} else if (animationList.getSortStatus().equals("SWAP")) {
 						Platform.runLater(() ->{
-							firstLabel.setFill(Paint.valueOf("red"));;
-							secondLabel.setFill(Paint.valueOf("red"));
-							double tempHeight = firstLabel.getHeight();
-							firstLabel.setHeight(secondLabel.getHeight());
-							secondLabel.setHeight(tempHeight);
+							firstRect.setFill(Paint.valueOf("red"));;
+							secondRect.setFill(Paint.valueOf("red"));
+							double tempHeight = firstRect.getHeight();
+							firstRect.setHeight(secondRect.getHeight());
+							secondRect.setHeight(tempHeight);
 						});
-						Thread.sleep(1000);
+						Thread.sleep(500);
 					} else if (animationList.getSortStatus().equals("REMOVE_FOCUS")) {
 						Platform.runLater(() -> {
-							firstLabel.setFill(Paint.valueOf("#305580"));
-							secondLabel.setFill(Paint.valueOf("#305580"));				
+							firstRect.setFill(Paint.valueOf("#305580"));
+							secondRect.setFill(Paint.valueOf("#305580"));				
 						});
-						Thread.sleep(1000);
 					} else if (animationList.getSortStatus().equals("SORTED")) {
 						Platform.runLater(() ->{
-							firstLabel.setFill(Paint.valueOf("purple"));	
-							secondLabel.setFill(Paint.valueOf("purple"));
+							firstRect.setFill(Paint.valueOf("purple"));	
+							secondRect.setFill(Paint.valueOf("purple"));
 						});
-						Thread.sleep(1000);
 					}
 				}
 				return null;

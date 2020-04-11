@@ -1,6 +1,7 @@
 package application;
 	
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -29,6 +30,10 @@ public class Main extends Application {
 			});
 			primaryStage.setMinWidth(1370);
 			primaryStage.setMinHeight(900);
+			primaryStage.setOnCloseRequest(e -> {
+				Platform.exit();
+				System.exit(0);
+			});
 			primaryStage.setTitle("Sorting Visulizer");
 			primaryStage.setScene(scene);
 			primaryStage.show();
