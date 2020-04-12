@@ -2,9 +2,9 @@ package sortingAlgorithms;
 
 public class AnimationList {
 	private int firstValue, secondValue;
-	private String sortStatus;
+	private SortStatus sortStatus;
 	
-	public AnimationList(int firstValue, int secondValue, String sortStatus) {
+	public AnimationList(int firstValue, int secondValue, SortStatus sortStatus) {
 		this.firstValue = firstValue;
 		this.secondValue = secondValue;
 		this.sortStatus = sortStatus;
@@ -21,10 +21,10 @@ public class AnimationList {
 	public void setSecondValue(int secondValue) {
 		this.secondValue = secondValue;
 	}
-	public String getSortStatus() {
+	public SortStatus getSortStatus() {
 		return sortStatus;
 	}
-	public void setSortStatus(String sortStatus) {
+	public void setSortStatus(SortStatus sortStatus) {
 		this.sortStatus = sortStatus;
 	}
 	
