@@ -1,14 +1,18 @@
 package sortingAlgorithms;
 
 public class AnimationList {
+	//Instance variables
 	private int firstValue, secondValue;
 	private SortStatus sortStatus;
 	
+	//Constructor
 	public AnimationList(int firstValue, int secondValue, SortStatus sortStatus) {
 		this.firstValue = firstValue;
 		this.secondValue = secondValue;
 		this.sortStatus = sortStatus;
-	}
+	}//End of constructor
+	
+	//Getters and setters
 	public int getFirstValue() {
 		return firstValue;
 	}
@@ -28,4 +32,4 @@ public class AnimationList {
 		this.sortStatus = sortStatus;
 	}
 	
-}
+} //End of class

@@ -28,7 +28,7 @@ import javafx.util.Duration;
 import sortingAlgorithms.BubbleSort;
 
 public class Controller implements Initializable {
-
+	//Instance variable
 	@FXML
 	private AnchorPane mainPane;
 	@FXML
@@ -84,7 +84,9 @@ public class Controller implements Initializable {
 		rippler.setLayoutY(backButtonBox.getLayoutY());
 		rippler.setMaskType(JFXRippler.RipplerMask.CIRCLE);
 		titlePane.getChildren().add(rippler);
-		slider.setValue(0);
+		slider.setValue(10);
+		copyArrayGenerated = generateArray((int) slider.getValue());
+		createBars(copyArrayGenerated);
 	} // End of method
 
 	@FXML
@@ -101,7 +103,7 @@ public class Controller implements Initializable {
 	} // End of method
 
 	@FXML
-	// Set a bouncing animation on the sort button
+	// Set a bouncing animation on the sort button every 5 seconds
 	public void translationOfSortButton() {
 		TranslateTransition firstBounce = new TranslateTransition(javafx.util.Duration.seconds(0.2), sortButton);
 		firstBounce.setFromY(sortButton.getLayoutY() - 19);
@@ -121,7 +123,7 @@ public class Controller implements Initializable {
 		sq = new SequentialTransition();
 		sq.getChildren().addAll(firstBounce, secondTransition, thirdTranslation);
 		sq.setCycleCount(1);
-		sq.setOnFinished(e -> { // Loop the animation
+		sq.setOnFinished(e -> { // Loop the animation and set a delay so that it will update the animation every 5 seconds
 			sq.setDelay(javafx.util.Duration.seconds(5));
 			sq.play();
 		});
@@ -137,9 +139,10 @@ public class Controller implements Initializable {
 		createBars(copyArrayGenerated);
 	} // End of method
 
+	@FXML
+	//When clicking on the sort button
 	public void handleSortButton(MouseEvent e) throws InterruptedException {
-		String algorithmSelected = jfxComboBox.getValue().getText();
-		
+		String algorithmSelected = jfxComboBox.getValue().getText(); //Get the text value in the ComboBox
 		switch (algorithmSelected) {
 		case "Bubble sort":
 			BubbleSort bubbleSort = new BubbleSort(copyArrayGenerated, diagramPane, titlePane, cancelButton);
@@ -161,6 +164,7 @@ public class Controller implements Initializable {
 	}
 
 	@FXML
+	//When the user drag the bar. Everytime the value change, a new array is generate depending on the pourcentage value of the slider
 	public void handleSlidderDrag(MouseEvent e) {
 		diagramPane.getChildren().clear();
 		copyArrayGenerated = generateArray((int) slider.getValue());
@@ -192,6 +196,7 @@ public class Controller implements Initializable {
 		return arrayGenerate;
 	} // End of method
 
+	//Use the generated array to create the rectangle bars
 	public void createBars(int[] array) {
 		// Create a new label for each value in the array
 		for (int i = 0; i < array.length; i++) {
