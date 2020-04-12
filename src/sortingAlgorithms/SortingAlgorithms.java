@@ -17,5 +17,5 @@ public abstract class SortingAlgorithms {
 			animation = new ArrayList<AnimationList>();
 		} // End of constructor
 		
-		public abstract void sort(FlowPane flowPane, AnchorPane anchorPane, Button cancelButton) throws InterruptedException;
+		public abstract void sort(FlowPane flowPane, AnchorPane anchorPane, AnchorPane mainPane) throws InterruptedException;
 }

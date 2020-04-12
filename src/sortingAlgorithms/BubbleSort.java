@@ -3,11 +3,15 @@ package sortingAlgorithms;
 import application.Main;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 
 public class BubbleSort extends SortingAlgorithms {
 
@@ -40,7 +44,7 @@ public class BubbleSort extends SortingAlgorithms {
 	} // End of method
 
 	// THis method will display the bubble sort algorithm in the GUI
-	public void sort(FlowPane flowPane, AnchorPane titlePane, Button cancelButton) throws InterruptedException {
+	public void sort(FlowPane flowPane, AnchorPane titlePane, AnchorPane mainPane) throws InterruptedException {
 		if (flowPane.getChildren().isEmpty()) { // If there are no rectangles in the GUI
 			Main.alertDialogIllegal(
 					"There are no values to do the sort, please enter or generate a new array before pressing the button!");
@@ -102,28 +106,56 @@ public class BubbleSort extends SortingAlgorithms {
 			} // End of method call
 		}; // End of Task
 		task.setOnRunning(e -> {
-			changeButtonStatus(true, task, titlePane, flowPane, cancelButton);
-			cancelButton.setVisible(true);
+			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
+			mainPane.getChildren().get(3).setVisible(true); //the cancel button is the fourth child of the main anchor pane
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 116, "COMPARE", 4);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 146, "SWAP", 5);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 176, "SORTED", 6);
+			Main.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
-			changeButtonStatus(false, task, titlePane, flowPane, cancelButton);
+			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
+			for (int i = 0; i < 3; i++)
+				mainPane.getChildren().remove(4);
+			Main.setTimer(mainPane, true);
+			Main.getTimeElapse().setVisible(false);
 		});
 		task.setOnSucceeded(e -> {
-			changeButtonStatus(false, task, titlePane, flowPane, cancelButton);
-			cancelButton.setVisible(false);
+			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
+			mainPane.getChildren().get(3).setVisible(false);
+			for (int i = 0; i < 3; i++)
+				mainPane.getChildren().remove(4);
+			Main.setTimer(mainPane, true);
 		});
 		new Thread(task).start();
 
 	} // End of method
 
 	// Set the buttons to visible or not visible
-	public void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane, Button cancelButton) {
+	private void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
+			AnchorPane mainPane) {
 		for (int i = 0; i < titlePane.getChildren().size(); i++)
 			titlePane.getChildren().get(i).setDisable(isDisable);
-		cancelButton.setOnAction(e -> {
+		((Button) mainPane.getChildren().get(3)).setOnAction(e -> {
 			task.cancel();
 			flowPane.getChildren().clear();
-			cancelButton.setVisible(false);
+			mainPane.getChildren().get(3).setVisible(false);
 		});
 	}
+
+	private void createLabelColor(AnchorPane mainPane, String color, double layoutY, String text, int childPosition) {
+		Label label = new Label();
+		label.setLayoutY(layoutY);
+		label.setStyle(color);
+		label.setPrefWidth(70);
+		label.setPrefHeight(24);
+		label.setTextFill(Paint.valueOf("white"));
+		label.setAlignment(Pos.CENTER);
+		label.setText(text);
+		AnchorPane.setRightAnchor(label, 10.0);
+		mainPane.getChildren().add(childPosition, label);
+		//((AnchorPane) mainPane.getChildren().get(1)).getChildren()
+	}
+	
+	
 } // End of class

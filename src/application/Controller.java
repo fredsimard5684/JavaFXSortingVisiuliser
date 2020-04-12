@@ -23,6 +23,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import sortingAlgorithms.BubbleSort;
@@ -85,6 +86,8 @@ public class Controller implements Initializable {
 		rippler.setLayoutY(backButtonBox.getLayoutY());
 		rippler.setMaskType(JFXRippler.RipplerMask.CIRCLE);
 		titlePane.getChildren().add(rippler);
+		
+		//Generate on load a random array
 		slider.setValue(10);
 		copyArrayGenerated = generateArray((int) slider.getValue());
 		createBars(copyArrayGenerated);
@@ -147,7 +150,7 @@ public class Controller implements Initializable {
 		switch (algorithmSelected) {
 		case "Bubble sort":
 			SortingAlgorithms bubbleSort = new BubbleSort(copyArrayGenerated);
-			bubbleSort.sort(diagramPane, titlePane, cancelButton);
+			bubbleSort.sort(diagramPane, titlePane, mainPane);
 			break;
 		case "Selection sort":
 			break;
