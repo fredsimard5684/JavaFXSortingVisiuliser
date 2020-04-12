@@ -26,6 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import sortingAlgorithms.BubbleSort;
+import sortingAlgorithms.SortingAlgorithms;
 
 public class Controller implements Initializable {
 	//Instance variable
@@ -145,7 +146,7 @@ public class Controller implements Initializable {
 		String algorithmSelected = jfxComboBox.getValue().getText(); //Get the text value in the ComboBox
 		switch (algorithmSelected) {
 		case "Bubble sort":
-			BubbleSort bubbleSort = new BubbleSort(copyArrayGenerated, diagramPane, titlePane, cancelButton);
+			SortingAlgorithms bubbleSort = new BubbleSort(copyArrayGenerated, diagramPane, titlePane, cancelButton);
 			bubbleSort.sort();
 			break;
 		case "Selection sort":

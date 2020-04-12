@@ -11,22 +11,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
-public class BubbleSort {
-	// Instance variables
-	private int[] arrayToSort;
-	private ArrayList<AnimationList> animation;
-	private FlowPane flowPane;
-	private AnchorPane titlePane;
-	private Button cancelButton;
+public class BubbleSort extends SortingAlgorithms {
 
 	// Contructor
 	public BubbleSort(int[] array, FlowPane flowPane, AnchorPane titlePane, Button cancelButton) {
-		this.arrayToSort = array;
-		animation = new ArrayList<AnimationList>();
-		this.flowPane = flowPane;
-		this.titlePane = titlePane;
-		this.cancelButton = cancelButton;
-
+		super(array, flowPane, titlePane, cancelButton);
 	} // End of constructor
 
 	// This method do the bubble sort algorithm and add the animation at the proper
