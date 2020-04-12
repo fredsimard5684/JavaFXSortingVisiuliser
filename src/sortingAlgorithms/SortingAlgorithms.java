@@ -9,18 +9,13 @@ import javafx.scene.layout.FlowPane;
 public abstract class SortingAlgorithms {
 	protected int[] arrayToSort;
 	protected ArrayList<AnimationList> animation;
-	protected FlowPane flowPane;
-	protected AnchorPane titlePane;
-	protected Button cancelButton;
+
 	
 	// Contructor
-		public SortingAlgorithms(int[] array, FlowPane flowPane, AnchorPane titlePane, Button cancelButton) {
+		public SortingAlgorithms(int[] array) {
 			this.arrayToSort = array;
 			animation = new ArrayList<AnimationList>();
-			this.flowPane = flowPane;
-			this.titlePane = titlePane;
-			this.cancelButton = cancelButton;
 		} // End of constructor
 		
-		public abstract void sort() throws InterruptedException;
+		public abstract void sort(FlowPane flowPane, AnchorPane anchorPane, Button cancelButton) throws InterruptedException;
 }

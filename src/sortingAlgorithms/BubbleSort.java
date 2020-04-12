@@ -1,7 +1,5 @@
 package sortingAlgorithms;
 
-import java.util.ArrayList;
-
 import application.Main;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -14,8 +12,8 @@ import javafx.scene.shape.Rectangle;
 public class BubbleSort extends SortingAlgorithms {
 
 	// Contructor
-	public BubbleSort(int[] array, FlowPane flowPane, AnchorPane titlePane, Button cancelButton) {
-		super(array, flowPane, titlePane, cancelButton);
+	public BubbleSort(int[] array) {
+		super(array);
 	} // End of constructor
 
 	// This method do the bubble sort algorithm and add the animation at the proper
@@ -42,7 +40,7 @@ public class BubbleSort extends SortingAlgorithms {
 	} // End of method
 
 	// THis method will display the bubble sort algorithm in the GUI
-	public void sort() throws InterruptedException {
+	public void sort(FlowPane flowPane, AnchorPane titlePane, Button cancelButton) throws InterruptedException {
 		if (flowPane.getChildren().isEmpty()) { // If there are no rectangles in the GUI
 			Main.alertDialogIllegal(
 					"There are no values to do the sort, please enter or generate a new array before pressing the button!");
@@ -104,14 +102,14 @@ public class BubbleSort extends SortingAlgorithms {
 			} // End of method call
 		}; // End of Task
 		task.setOnRunning(e -> {
-			changeButtonStatus(true, task);
+			changeButtonStatus(true, task, titlePane, flowPane, cancelButton);
 			cancelButton.setVisible(true);
 		});
 		task.setOnCancelled(e -> {
-			changeButtonStatus(false, task);
+			changeButtonStatus(false, task, titlePane, flowPane, cancelButton);
 		});
 		task.setOnSucceeded(e -> {
-			changeButtonStatus(false, task);
+			changeButtonStatus(false, task, titlePane, flowPane, cancelButton);
 			cancelButton.setVisible(false);
 		});
 		new Thread(task).start();
@@ -119,7 +117,7 @@ public class BubbleSort extends SortingAlgorithms {
 	} // End of method
 
 	// Set the buttons to visible or not visible
-	public void changeButtonStatus(boolean isDisable, Task<Void> task) {
+	public void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane, Button cancelButton) {
 		for (int i = 0; i < titlePane.getChildren().size(); i++)
 			titlePane.getChildren().get(i).setDisable(isDisable);
 		cancelButton.setOnAction(e -> {

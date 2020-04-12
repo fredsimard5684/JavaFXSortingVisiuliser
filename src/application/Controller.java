@@ -146,8 +146,8 @@ public class Controller implements Initializable {
 		String algorithmSelected = jfxComboBox.getValue().getText(); //Get the text value in the ComboBox
 		switch (algorithmSelected) {
 		case "Bubble sort":
-			SortingAlgorithms bubbleSort = new BubbleSort(copyArrayGenerated, diagramPane, titlePane, cancelButton);
-			bubbleSort.sort();
+			SortingAlgorithms bubbleSort = new BubbleSort(copyArrayGenerated);
+			bubbleSort.sort(diagramPane, titlePane, cancelButton);
 			break;
 		case "Selection sort":
 			break;
