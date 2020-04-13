@@ -1,8 +1,13 @@
 package application;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -15,8 +20,12 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
@@ -27,14 +36,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import sortingAlgorithms.BubbleSort;
 import sortingAlgorithms.SortingAlgorithms;
 
 public class Controller implements Initializable {
-	//Instance variable
+	// Instance variable
 	@FXML
 	private AnchorPane mainPane;
 	@FXML
@@ -59,8 +68,8 @@ public class Controller implements Initializable {
 	private int[] copyArrayGenerated;
 	private SequentialTransition sq;
 	private Text textButtons;
-	
-	//Set the speed of the algorithm
+
+	// Set the speed of the algorithm
 	private int algorithmSpeed;
 
 	@Override
@@ -93,8 +102,8 @@ public class Controller implements Initializable {
 		rippler.setLayoutY(backButtonBox.getLayoutY());
 		rippler.setMaskType(JFXRippler.RipplerMask.CIRCLE);
 		titlePane.getChildren().add(rippler);
-		
-		//Generate on load a random array
+
+		// Generate on load a random array
 		slider.setValue(10);
 		copyArrayGenerated = generateArray((int) slider.getValue());
 		createBars(copyArrayGenerated);
@@ -135,7 +144,8 @@ public class Controller implements Initializable {
 		sq = new SequentialTransition();
 		sq.getChildren().addAll(firstBounce, secondTransition, thirdTranslation);
 		sq.setCycleCount(1);
-		sq.setOnFinished(e -> { // Loop the animation and set a delay so that it will update the animation every 5 seconds
+		sq.setOnFinished(e -> { // Loop the animation and set a delay so that it will update the animation every
+								// 5 seconds
 			sq.setDelay(javafx.util.Duration.seconds(5));
 			sq.play();
 		});
@@ -152,9 +162,9 @@ public class Controller implements Initializable {
 	} // End of method
 
 	@FXML
-	//When clicking on the sort button
+	// When clicking on the sort button
 	public void handleSortButton(MouseEvent e) throws InterruptedException {
-		String algorithmSelected = jfxComboBox.getValue().getText(); //Get the text value in the ComboBox
+		String algorithmSelected = jfxComboBox.getValue().getText(); // Get the text value in the ComboBox
 		switch (algorithmSelected) {
 		case "Bubble sort":
 			SortingAlgorithms bubbleSort = new BubbleSort(copyArrayGenerated);
@@ -176,7 +186,8 @@ public class Controller implements Initializable {
 	}
 
 	@FXML
-	//When the user drag the bar. Everytime the value change, a new array is generate depending on the pourcentage value of the slider
+	// When the user drag the bar. Everytime the value change, a new array is
+	// generate depending on the pourcentage value of the slider
 	public void handleSlidderDrag(MouseEvent e) {
 		diagramPane.getChildren().clear();
 		copyArrayGenerated = generateArray((int) slider.getValue());
@@ -196,8 +207,9 @@ public class Controller implements Initializable {
 		transition.setAutoReverse(true);
 		transition.play();
 	} // End of method
-	
-	//Allow to change the default speed of the algorithm
+
+	// Allow to change the default speed of the algorithm
+	@FXML
 	public void handleClickOnSpeedButton(MouseEvent e) {
 		TextInputDialog dialog = new TextInputDialog(String.valueOf(algorithmSpeed));
 		dialog.setTitle("Change the algorithm speed");
@@ -209,17 +221,105 @@ public class Controller implements Initializable {
 		while (isWrongValue) {
 			result = dialog.showAndWait();
 			try {
-				result.ifPresent(speed-> algorithmSpeed = Integer.parseInt(speed));
-				isWrongValue = (algorithmSpeed < 1 || algorithmSpeed > 10000 ? isWrongValue = true: false);
-				//If the user enter non-numeric character, catch the error
+				result.ifPresent(speed -> algorithmSpeed = Integer.parseInt(speed));
+				isWrongValue = (algorithmSpeed < 1 || algorithmSpeed > 10000 ? isWrongValue = true : false);
+				// If the user enter non-numeric character, catch the error
 			} catch (NumberFormatException exception) {
 				isWrongValue = true;
 			}
 			if (isWrongValue)
 				errorLabel(dialog);
 		}
+	} // End of method
+
+	@FXML
+	public void handleEnteringArray(MouseEvent e) throws FileNotFoundException {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Enter your array");
+		alert.setHeaderText("Array type selection!");
+		alert.setContentText(
+				"Choose your array input.\nPlease note that either selection can't have an array greater than 300 with numbers larger than 700. Also, a number can't be negative.");
+
+		ButtonType buttonTypeOne = new ButtonType("Write your array");
+		ButtonType buttonTypeTwo = new ButtonType("Select your array from a text file");
+		ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == buttonTypeOne) {
+			diagramPane.getChildren().clear();
+			copyArrayGenerated = writeYourArraySelection(" ");
+			createBars(copyArrayGenerated);
+			algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
+		} else if (result.get() == buttonTypeTwo) {
+			FileChooser fileChooser = new FileChooser();
+			Node source = (Node) e.getSource();
+			File selectedFile = fileChooser.showOpenDialog(source.getScene().getWindow());
+			if (selectedFile == null) {
+				Main.alertDialogIllegal("You have choosen no file...");
+				return;
+			} // End of method
+			if (!selectedFile.getName().endsWith(".txt")) {
+				Main.alertDialogIllegal("Please choose a .txt file");
+				return;
+			}
+			String valueFromFile = readFile(selectedFile);
+			diagramPane.getChildren().clear();
+			copyArrayGenerated = createIntegerArray(valueFromFile, " ");
+			createBars(copyArrayGenerated);
+			algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
+		} //End of else-if
+	} // End of method
+
+	// Method that read files
+	public String readFile(File selectedFile) throws FileNotFoundException {
+		FileInputStream fis = new FileInputStream(selectedFile);
+		BufferedInputStream bis = new BufferedInputStream(fis);
+		Scanner scanner = new Scanner(bis);
+		StringBuilder sb = new StringBuilder();
+		String readLine = "";
+		while (scanner.hasNextLine()) {
+			readLine = scanner.nextLine();
+			sb.append(readLine + " ");
+			if (readLine.length() == 0)
+				continue;
+		} // End of loop
+		return sb.toString();
+	} // End of method
+
+	// First button press
+	public int[] writeYourArraySelection(String regex) {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Input your numbers");
+		dialog.setHeaderText("Input your array!");
+		dialog.setContentText("Please enter your numbers followed by a space:");
+		Optional<String> result = dialog.showAndWait();
+		String getNumbers = null;
+		if (result.isPresent())
+			getNumbers = result.get();
+		return createIntegerArray(getNumbers, regex);
+	} // End of method
+
+	// Method that checks if a string can be convert to an integer
+	public int[] createIntegerArray(String getNumbers, String regex) {
+		String gatherNumbers[] = getNumbers.split(regex);
+		int copyNumbers[] = new int[gatherNumbers.length];
+		for (int i = 0; i < gatherNumbers.length; i++) {
+			if (tryParseInt(gatherNumbers[i]) == false || Integer.parseInt(gatherNumbers[i]) < 1
+					|| Integer.parseInt(gatherNumbers[i]) > 700) {
+				Main.alertDialogIllegal(
+						"You've entered a character that is either not a number or is above than 700 or is beyond 1...");
+				// Maybe change the exception
+				throw new IllegalArgumentException();
+			}
+			copyNumbers[i] = Integer.parseInt(gatherNumbers[i]);
+		}
+		return copyNumbers;
 	}
-	//Create the error if the user enter a wrong value
+
+	// Create the error if the user enter a wrong value
 	public void errorLabel(TextInputDialog dialog) {
 		Label label = new Label("Please enter a value between 1ms and 10000ms");
 		label.setTextFill(Paint.valueOf("red"));
@@ -227,7 +327,7 @@ public class Controller implements Initializable {
 		expContent.setMaxWidth(Double.MAX_VALUE);
 		expContent.add(label, 0, 0);
 		dialog.getDialogPane().setExpandableContent(expContent);
-	}
+	} // End of method
 
 	// Method that generates a new array
 	public int[] generateArray(int size) {
@@ -241,7 +341,7 @@ public class Controller implements Initializable {
 		return arrayGenerate;
 	} // End of method
 
-	//Use the generated array to create the rectangle bars
+	// Use the generated array to create the rectangle bars
 	public void createBars(int[] array) {
 		// Create a new label for each value in the array
 		for (int i = 0; i < array.length; i++) {
@@ -252,5 +352,16 @@ public class Controller implements Initializable {
 			diagramPane.getChildren().add(rectangle);
 		} // End of loop
 	} // End of method
+	
+	// Try to parse an Integer. Put in in static maybe??
+	public boolean tryParseInt(String value) {
+		try {
+			Integer.parseInt(value);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	} // End of method
+
 
 } // End of class

@@ -37,7 +37,7 @@
                </cursor>
             </Text>
             <Separator layoutX="633.0" orientation="VERTICAL" prefHeight="64.0" prefWidth="7.0" styleClass="seperatorMenu" stylesheets="@application.css" AnchorPane.leftAnchor="643.0" />
-            <Text fx:id="enterArray" fill="#abb37b" layoutX="1291.0" layoutY="48.0" onMouseEntered="#hoverInTextMenu" onMouseExited="#hoverOutTextMenu" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textMenu" text="Enter your own array" wrappingWidth="194.25" AnchorPane.rightAnchor="434.75">
+            <Text fx:id="enterArray" fill="#abb37b" layoutX="1291.0" layoutY="48.0" onMouseClicked="#handleEnteringArray" onMouseEntered="#hoverInTextMenu" onMouseExited="#hoverOutTextMenu" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textMenu" text="Enter your own array" wrappingWidth="194.25" AnchorPane.rightAnchor="434.75">
                <font>
                   <Font name="Arial" size="20.0" />
                </font>
