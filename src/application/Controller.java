@@ -1,6 +1,7 @@
 package application;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -15,11 +16,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -51,10 +55,13 @@ public class Controller implements Initializable {
 	@FXML
 	private JFXSlider slider;
 	@FXML
-	protected FlowPane diagramPane;
+	private FlowPane diagramPane;
 	private int[] copyArrayGenerated;
 	private SequentialTransition sq;
 	private Text textButtons;
+	
+	//Set the speed of the algorithm
+	private int algorithmSpeed;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -91,6 +98,7 @@ public class Controller implements Initializable {
 		slider.setValue(10);
 		copyArrayGenerated = generateArray((int) slider.getValue());
 		createBars(copyArrayGenerated);
+		algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
 	} // End of method
 
 	@FXML
@@ -150,7 +158,7 @@ public class Controller implements Initializable {
 		switch (algorithmSelected) {
 		case "Bubble sort":
 			SortingAlgorithms bubbleSort = new BubbleSort(copyArrayGenerated);
-			bubbleSort.sort(diagramPane, titlePane, mainPane);
+			bubbleSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
 			break;
 		case "Selection sort":
 			break;
@@ -173,6 +181,7 @@ public class Controller implements Initializable {
 		diagramPane.getChildren().clear();
 		copyArrayGenerated = generateArray((int) slider.getValue());
 		createBars(copyArrayGenerated);
+		algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
 	} // End of method
 
 	@FXML
@@ -186,7 +195,38 @@ public class Controller implements Initializable {
 		transition.setCycleCount(2);
 		transition.setAutoReverse(true);
 		transition.play();
-	} // ENd of method
+	} // End of method
+	
+	//Allow to change the default speed of the algorithm
+	public void handleClickOnSpeedButton(MouseEvent e) {
+		TextInputDialog dialog = new TextInputDialog(String.valueOf(algorithmSpeed));
+		dialog.setTitle("Change the algorithm speed");
+		dialog.setHeaderText("Changing the algorithm speed");
+		dialog.setContentText("Enter the algorithm speed in milliseconds(the lower the faster):");
+		Optional<String> result;
+		boolean isWrongValue = true;
+		while (isWrongValue) {
+			result = dialog.showAndWait();
+			try {
+				result.ifPresent(speed-> algorithmSpeed = Integer.parseInt(speed));
+				isWrongValue = (algorithmSpeed < 1 || algorithmSpeed > 10000 ? isWrongValue = true: false);
+				//If the user enter non-numeric character, catch the error
+			} catch (NumberFormatException exception) {
+				isWrongValue = true;
+			}
+			if (isWrongValue)
+				errorLabel(dialog);
+		}
+	}
+	//Create the error if the user enter a wrong value
+	public void errorLabel(TextInputDialog dialog) {
+		Label label = new Label("Please enter a value between 1ms and 10000ms");
+		label.setTextFill(Paint.valueOf("red"));
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		dialog.getDialogPane().setExpandableContent(expContent);
+	}
 
 	// Method that generates a new array
 	public int[] generateArray(int size) {

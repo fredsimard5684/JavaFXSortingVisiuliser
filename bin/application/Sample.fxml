@@ -28,12 +28,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Text>
-            <Text fill="#abb37b" layoutX="316.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textMenu" text="Change array size &amp; speed" wrappingWidth="241.64975929260254" AnchorPane.leftAnchor="318.25">
+            <Text fill="#abb37b" layoutX="316.0" layoutY="48.0" onMouseClicked="#handleClickOnSpeedButton" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="textMenu" text="Change array size &amp; speed" wrappingWidth="241.64975929260254" AnchorPane.leftAnchor="318.25">
                <font>
                   <Font name="Arial" size="20.0" />
                </font>
                <cursor>
-                  <Cursor fx:constant="DEFAULT" />
+                  <Cursor fx:constant="HAND" />
                </cursor>
             </Text>
             <Separator layoutX="633.0" orientation="VERTICAL" prefHeight="64.0" prefWidth="7.0" styleClass="seperatorMenu" stylesheets="@application.css" AnchorPane.leftAnchor="643.0" />
@@ -87,6 +87,9 @@
          </children></AnchorPane>
       <AnchorPane id="footBorder" layoutY="917.0" prefHeight="79.0" prefWidth="1800.0" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
       <FlowPane fx:id="diagramPane" alignment="BOTTOM_CENTER" layoutX="76.0" layoutY="116.0" prefHeight="805.0" prefWidth="1662.0" prefWrapLength="1800.0" rowValignment="BOTTOM" AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="116.0" />
-      <Button fx:id="cancelButton" layoutX="1719.0" layoutY="79.0" mnemonicParsing="false" style="-fx-background-color: #305580;" text="CANCEL" textFill="WHITE" visible="false" AnchorPane.rightAnchor="14.0" />
+      <Button fx:id="cancelButton" layoutX="1719.0" layoutY="79.0" mnemonicParsing="false" style="-fx-background-color: #305580;" text="CANCEL" textFill="WHITE" visible="false" AnchorPane.rightAnchor="14.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
    </children>
 </AnchorPane>

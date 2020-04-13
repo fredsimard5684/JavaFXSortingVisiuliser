@@ -44,7 +44,7 @@ public class BubbleSort extends SortingAlgorithms {
 	} // End of method
 
 	// THis method will display the bubble sort algorithm in the GUI
-	public void sort(FlowPane flowPane, AnchorPane titlePane, AnchorPane mainPane) throws InterruptedException {
+	public void sort(FlowPane flowPane, AnchorPane titlePane, AnchorPane mainPane, int sleepTime) throws InterruptedException {
 		if (flowPane.getChildren().isEmpty()) { // If there are no rectangles in the GUI
 			Main.alertDialogIllegal(
 					"There are no values to do the sort, please enter or generate a new array before pressing the button!");
@@ -52,7 +52,6 @@ public class BubbleSort extends SortingAlgorithms {
 		}
 		// This will calculate the number of time that the Thread is going to sleep to
 		// be able to display the animation properly in the GUI
-		final int SLEEP_TIME = (int) (10000 / (Math.pow(arrayToSort.length, 1.6)));
 		doBubbleSort(); // Call the bubble sort algorithm so that the animation can be displayed
 		// Create a new task with a new thread that will update the GUI while running
 		// the loop
@@ -73,7 +72,7 @@ public class BubbleSort extends SortingAlgorithms {
 							;
 							secondRect.setFill(Paint.valueOf("#58BC50"));
 						});
-						Thread.sleep(SLEEP_TIME);
+						Thread.sleep(sleepTime);
 						break;
 					case SWAP:
 						Platform.runLater(() -> {
@@ -84,7 +83,7 @@ public class BubbleSort extends SortingAlgorithms {
 							firstRect.setHeight(secondRect.getHeight());
 							secondRect.setHeight(tempHeight);
 						});
-						Thread.sleep(SLEEP_TIME);
+						Thread.sleep(sleepTime);
 						break;
 					case REMOVE_FOCUS:
 						Platform.runLater(() -> {
