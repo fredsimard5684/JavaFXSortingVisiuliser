@@ -1,5 +1,5 @@
 package sortingAlgorithms;
 
 public enum SortStatus {
-	COMPARE, SWAP, REMOVE_FOCUS, SORTED;
+	COMPARE, SWAP, REMOVE_FOCUS, SORTED, FIRST_VALUE;
 }

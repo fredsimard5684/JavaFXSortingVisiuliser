@@ -50,8 +50,6 @@ public class BubbleSort extends SortingAlgorithms {
 					"There are no values to do the sort, please enter or generate a new array before pressing the button!");
 			return;
 		}
-		// This will calculate the number of time that the Thread is going to sleep to
-		// be able to display the animation properly in the GUI
 		doBubbleSort(); // Call the bubble sort algorithm so that the animation can be displayed
 		// Create a new task with a new thread that will update the GUI while running
 		// the loop

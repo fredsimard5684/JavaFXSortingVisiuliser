@@ -40,6 +40,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import sortingAlgorithms.BubbleSort;
+import sortingAlgorithms.SelectionSort;
 import sortingAlgorithms.SortingAlgorithms;
 
 public class Controller implements Initializable {
@@ -113,7 +114,7 @@ public class Controller implements Initializable {
 		diagramPane.getChildren().clear();
 		copyArrayGenerated = array;
 		createBars(copyArrayGenerated);
-		algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
+		algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.5)));
 	}
 
 	@FXML
@@ -175,6 +176,8 @@ public class Controller implements Initializable {
 			bubbleSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
 			break;
 		case "Selection sort":
+			SortingAlgorithms selectionSort = new SelectionSort(copyArrayGenerated);
+			selectionSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
 			break;
 		case "Insertion sort":
 			break;
