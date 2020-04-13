@@ -201,8 +201,9 @@ public class Controller implements Initializable {
 	public void handleClickOnSpeedButton(MouseEvent e) {
 		TextInputDialog dialog = new TextInputDialog(String.valueOf(algorithmSpeed));
 		dialog.setTitle("Change the algorithm speed");
-		dialog.setHeaderText("Changing the algorithm speed");
-		dialog.setContentText("Enter the algorithm speed in milliseconds(the lower the faster):");
+		dialog.setHeaderText("Customize the algorithm speed");
+		dialog.setContentText("Enter the algorithm speed in milliseconds(the lower the faster):\n"
+				+ "Note: This value will be ovewrite if you change the array size with the slider");
 		Optional<String> result;
 		boolean isWrongValue = true;
 		while (isWrongValue) {
