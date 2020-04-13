@@ -105,10 +105,16 @@ public class Controller implements Initializable {
 
 		// Generate on load a random array
 		slider.setValue(10);
-		copyArrayGenerated = generateArray((int) slider.getValue());
+		initialiseRectangleBars(generateArray((int) slider.getValue()));
+	} // End of method
+	
+	//Set the rectangles bar with the associated speed
+	public void initialiseRectangleBars(int[] array) {
+		diagramPane.getChildren().clear();
+		copyArrayGenerated = array;
 		createBars(copyArrayGenerated);
 		algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
-	} // End of method
+	}
 
 	@FXML
 	// CSS doesnt work when hovering a text element
@@ -156,9 +162,7 @@ public class Controller implements Initializable {
 	// When clicking on the generate a new array button
 	public void handleClickArrayGeneration(MouseEvent e) {
 		fadeAnimation(e);
-		diagramPane.getChildren().clear();
-		copyArrayGenerated = generateArray((int) slider.getValue());
-		createBars(copyArrayGenerated);
+		initialiseRectangleBars(generateArray((int) slider.getValue()));
 	} // End of method
 
 	@FXML
@@ -189,10 +193,7 @@ public class Controller implements Initializable {
 	// When the user drag the bar. Everytime the value change, a new array is
 	// generate depending on the pourcentage value of the slider
 	public void handleSlidderDrag(MouseEvent e) {
-		diagramPane.getChildren().clear();
-		copyArrayGenerated = generateArray((int) slider.getValue());
-		createBars(copyArrayGenerated);
-		algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
+		initialiseRectangleBars(generateArray((int) slider.getValue()));
 	} // End of method
 
 	@FXML
@@ -249,10 +250,7 @@ public class Controller implements Initializable {
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == buttonTypeOne) {
-			diagramPane.getChildren().clear();
-			copyArrayGenerated = writeYourArraySelection(" ");
-			createBars(copyArrayGenerated);
-			algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
+			initialiseRectangleBars(writeYourArraySelection(" "));
 		} else if (result.get() == buttonTypeTwo) {
 			FileChooser fileChooser = new FileChooser();
 			Node source = (Node) e.getSource();
@@ -266,28 +264,10 @@ public class Controller implements Initializable {
 				return;
 			}
 			String valueFromFile = readFile(selectedFile);
-			diagramPane.getChildren().clear();
-			copyArrayGenerated = createIntegerArray(valueFromFile, " ");
-			createBars(copyArrayGenerated);
-			algorithmSpeed = (int) (10000 / (Math.pow(copyArrayGenerated.length, 1.6)));
+			initialiseRectangleBars(createIntegerArray(valueFromFile, " "));
 		} //End of else-if
 	} // End of method
 
-	// Method that read files
-	public String readFile(File selectedFile) throws FileNotFoundException {
-		FileInputStream fis = new FileInputStream(selectedFile);
-		BufferedInputStream bis = new BufferedInputStream(fis);
-		Scanner scanner = new Scanner(bis);
-		StringBuilder sb = new StringBuilder();
-		String readLine = "";
-		while (scanner.hasNextLine()) {
-			readLine = scanner.nextLine();
-			sb.append(readLine + " ");
-			if (readLine.length() == 0)
-				continue;
-		} // End of loop
-		return sb.toString();
-	} // End of method
 
 	// First button press
 	public int[] writeYourArraySelection(String regex) {
@@ -318,6 +298,23 @@ public class Controller implements Initializable {
 		}
 		return copyNumbers;
 	}
+	
+	// Method that read files
+		public String readFile(File selectedFile) throws FileNotFoundException {
+			FileInputStream fis = new FileInputStream(selectedFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			Scanner scanner = new Scanner(bis);
+			StringBuilder sb = new StringBuilder();
+			String readLine = "";
+			while (scanner.hasNextLine()) {
+				readLine = scanner.nextLine();
+				sb.append(readLine + " ");
+				if (readLine.length() == 0)
+					continue;
+			} // End of loop
+			scanner.close();
+			return sb.toString();
+		} // End of method
 
 	// Create the error if the user enter a wrong value
 	public void errorLabel(TextInputDialog dialog) {

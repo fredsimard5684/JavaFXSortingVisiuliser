@@ -24,23 +24,23 @@ public class BubbleSort extends SortingAlgorithms {
 	// placement
 	private void doBubbleSort() {
 		int endOfInternalLoop = 0;
-		for (int i = 0; i < arrayToSort.length; i++) {
-			for (int j = 0; j < arrayToSort.length - 1 - i; j++) {
-				endOfInternalLoop = arrayToSort.length - i - 1;
-				animation.add(new AnimationList(j, j + 1, SortStatus.COMPARE));
+		for (int i = 0; i < getArrayToSort().length; i++) {
+			for (int j = 0; j < getArrayToSort().length - 1 - i; j++) {
+				endOfInternalLoop = getArrayToSort().length - i - 1;
+				getAnimation().add(new AnimationList(j, j + 1, SortStatus.COMPARE));
 				// Swap the values
-				if (arrayToSort[j] > arrayToSort[j + 1]) {
-					int temp = arrayToSort[j];
-					arrayToSort[j] = arrayToSort[j + 1];
-					arrayToSort[j + 1] = temp;
-					animation.add(new AnimationList(j, j + 1, SortStatus.SWAP));
-					animation.add(new AnimationList(j, j + 1, SortStatus.COMPARE));
+				if (getArrayToSort()[j] > getArrayToSort()[j + 1]) {
+					int temp = getArrayToSort()[j];
+					getArrayToSort()[j] = getArrayToSort()[j + 1];
+					getArrayToSort()[j + 1] = temp;
+					getAnimation().add(new AnimationList(j, j + 1, SortStatus.SWAP));
+					getAnimation().add(new AnimationList(j, j + 1, SortStatus.COMPARE));
 				}
-				animation.add(new AnimationList(j, j + 1, SortStatus.REMOVE_FOCUS));
+				getAnimation().add(new AnimationList(j, j + 1, SortStatus.REMOVE_FOCUS));
 			} // End of internal loop
-			animation.add(new AnimationList(endOfInternalLoop, endOfInternalLoop, SortStatus.SORTED));
+			getAnimation().add(new AnimationList(endOfInternalLoop, endOfInternalLoop, SortStatus.SORTED));
 		} // End of external loop
-		animation.add(new AnimationList(0, 0, SortStatus.SORTED));
+		getAnimation().add(new AnimationList(0, 0, SortStatus.SORTED));
 	} // End of method
 
 	// THis method will display the bubble sort algorithm in the GUI
@@ -60,7 +60,7 @@ public class BubbleSort extends SortingAlgorithms {
 			protected Void call() throws Exception {
 				// Loop through all the animation where the bubble sort algorithm is doing
 				// something
-				for (AnimationList animationList : animation) {
+				for (AnimationList animationList : getAnimation()) {
 					Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animationList.getFirstValue());
 					Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animationList.getSecondValue());
 					if (isCancelled())
@@ -131,7 +131,7 @@ public class BubbleSort extends SortingAlgorithms {
 	} // End of method
 
 	// Set the buttons to visible or not visible
-	private void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
+	protected void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
 			AnchorPane mainPane) {
 		for (int i = 0; i < titlePane.getChildren().size(); i++)
 			titlePane.getChildren().get(i).setDisable(isDisable);
@@ -142,7 +142,7 @@ public class BubbleSort extends SortingAlgorithms {
 		});
 	}
 
-	private void createLabelColor(AnchorPane mainPane, String color, double layoutY, String text, int childPosition) {
+	protected void createLabelColor(AnchorPane mainPane, String color, double layoutY, String text, int childPosition) {
 		Label label = new Label();
 		label.setLayoutY(layoutY);
 		label.setStyle(color);
