@@ -43,8 +43,9 @@ public class BubbleSort extends SortingAlgorithms {
 		getAnimation().add(new AnimationList(0, 0, SortStatus.SORTED));
 	} // End of method
 
-	// THis method will display the bubble sort algorithm in the GUI
-	public void sort(FlowPane flowPane, AnchorPane titlePane, AnchorPane mainPane, int sleepTime) throws InterruptedException {
+	// This method will display the bubble sort algorithm in the GUI
+	public void sort(FlowPane flowPane, AnchorPane titlePane, AnchorPane mainPane, int sleepTime)
+			throws InterruptedException {
 		if (flowPane.getChildren().isEmpty()) { // If there are no rectangles in the GUI
 			Main.alertDialogIllegal(
 					"There are no values to do the sort, please enter or generate a new array before pressing the button!");
@@ -56,55 +57,66 @@ public class BubbleSort extends SortingAlgorithms {
 		Task<Void> task = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
-				// Loop through all the animation where the bubble sort algorithm is doing
-				// something
-				for (AnimationList animationList : getAnimation()) {
-					Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animationList.getFirstValue());
-					Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animationList.getSecondValue());
-					if (isCancelled())
-						return null;
-					switch (animationList.getSortStatus()) {
-					case COMPARE:
-						Platform.runLater(() -> {
-							firstRect.setFill(Paint.valueOf("#58BC50"));
-							;
-							secondRect.setFill(Paint.valueOf("#58BC50"));
-						});
-						Thread.sleep(sleepTime);
-						break;
-					case SWAP:
-						Platform.runLater(() -> {
-							firstRect.setFill(Paint.valueOf("#FFB3B8"));
-							;
-							secondRect.setFill(Paint.valueOf("#FFB3B8"));
-							double tempHeight = firstRect.getHeight();
-							firstRect.setHeight(secondRect.getHeight());
-							secondRect.setHeight(tempHeight);
-						});
-						Thread.sleep(sleepTime);
-						break;
-					case REMOVE_FOCUS:
-						Platform.runLater(() -> {
-							firstRect.setFill(Paint.valueOf("#305580"));
-							secondRect.setFill(Paint.valueOf("#305580"));
-						});
-						break;
-					case SORTED:
-						Platform.runLater(() -> {
-							firstRect.setFill(Paint.valueOf("#8BA9CC"));
-							secondRect.setFill(Paint.valueOf("#8BA9CC"));
-						});
-						break;
-					default:
-						break;
-					} // End of switch
-				} // End of for
+				doAnimation(flowPane, sleepTime);
 				return null;
 			} // End of method call
 		}; // End of Task
+		setTaskStatus(task, titlePane, flowPane, mainPane);
+		new Thread(task).start();
+
+	} // End of method
+
+	private void doAnimation(FlowPane flowPane, int sleepTime) throws InterruptedException {
+		// Loop through all the animation where the bubble sort algorithm is doing
+		// something
+		for (AnimationList animationList : getAnimation()) {
+			Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animationList.getFirstValue());
+			Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animationList.getSecondValue());
+
+			switch (animationList.getSortStatus()) {
+			case COMPARE:
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("#58BC50"));
+					;
+					secondRect.setFill(Paint.valueOf("#58BC50"));
+				});
+				Thread.sleep(sleepTime);
+				break;
+			case SWAP:
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("#FFB3B8"));
+					;
+					secondRect.setFill(Paint.valueOf("#FFB3B8"));
+					double tempHeight = firstRect.getHeight();
+					firstRect.setHeight(secondRect.getHeight());
+					secondRect.setHeight(tempHeight);
+				});
+				Thread.sleep(sleepTime);
+				break;
+			case REMOVE_FOCUS:
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("#305580"));
+					secondRect.setFill(Paint.valueOf("#305580"));
+				});
+				break;
+			case SORTED:
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("#8BA9CC"));
+					secondRect.setFill(Paint.valueOf("#8BA9CC"));
+				});
+				break;
+			default:
+				break;
+			} // End of switch
+		} // End of for
+	}
+
+	// Make the code more cleaner
+	protected void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
 		task.setOnRunning(e -> {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
-			mainPane.getChildren().get(3).setVisible(true); //the cancel button is the fourth child of the main anchor pane
+			mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
+															// pane
 			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE", 4);
 			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 176, "SWAP", 5);
 			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 276, "SORTED", 6);
@@ -124,8 +136,6 @@ public class BubbleSort extends SortingAlgorithms {
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 		});
-		new Thread(task).start();
-
 	} // End of method
 
 	// Set the buttons to visible or not visible
@@ -138,7 +148,7 @@ public class BubbleSort extends SortingAlgorithms {
 			flowPane.getChildren().clear();
 			mainPane.getChildren().get(3).setVisible(false);
 		});
-	} //End of method
+	} // End of method
 
 	@Override
 	protected void createLabelColor(AnchorPane mainPane, String color, double layoutX, String text, int childPosition) {
@@ -152,7 +162,7 @@ public class BubbleSort extends SortingAlgorithms {
 		label.setText(text);
 		AnchorPane.setTopAnchor(label, 87.0);
 		mainPane.getChildren().add(childPosition, label);
-		
-	} //End of method
-	
+
+	} // End of method
+
 } // End of class

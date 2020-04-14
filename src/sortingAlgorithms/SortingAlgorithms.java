@@ -35,6 +35,7 @@ public abstract class SortingAlgorithms {
 		}
 
 		public abstract void sort(FlowPane flowPane, AnchorPane anchorPane, AnchorPane mainPane, int sleepTime) throws InterruptedException;
+		protected abstract void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane);
 		protected abstract void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
 				AnchorPane mainPane);
 		protected abstract void createLabelColor(AnchorPane mainPane, String color, double layoutY, String text, int childPosition);
