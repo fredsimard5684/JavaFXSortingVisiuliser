@@ -40,6 +40,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import sortingAlgorithms.BubbleSort;
+import sortingAlgorithms.InsertionSort;
 import sortingAlgorithms.SelectionSort;
 import sortingAlgorithms.SortingAlgorithms;
 
@@ -180,6 +181,8 @@ public class Controller implements Initializable {
 			selectionSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
 			break;
 		case "Insertion sort":
+			SortingAlgorithms insertionSort = new InsertionSort(copyArrayGenerated);
+			insertionSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
 			break;
 		case "Merge sort":
 			break;

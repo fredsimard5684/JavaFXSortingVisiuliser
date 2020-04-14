@@ -104,11 +104,11 @@ public class Main extends Application {
 			int interval = 0;
 			@Override
 			public void run() {
-					Platform.runLater(() -> timeElapse.setText(String.format("Time: %d seconds", interval)));
+					Platform.runLater(() -> timeElapse.setText(String.format("Time: %d deciseconds", interval)));
 					interval++;
 			}
 		};
-		timer.scheduleAtFixedRate(timerTask, 0, 1000);
+		timer.scheduleAtFixedRate(timerTask, 0, 100);
 	}
 	
 	public static void createTextElapse(AnchorPane mainPane) {
