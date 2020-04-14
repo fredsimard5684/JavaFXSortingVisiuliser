@@ -105,9 +105,9 @@ public class BubbleSort extends SortingAlgorithms {
 		task.setOnRunning(e -> {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); //the cancel button is the fourth child of the main anchor pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 116, "COMPARE", 4);
-			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 146, "SWAP", 5);
-			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 176, "SORTED", 6);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE", 4);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 176, "SWAP", 5);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 276, "SORTED", 6);
 			Main.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
@@ -138,21 +138,21 @@ public class BubbleSort extends SortingAlgorithms {
 			flowPane.getChildren().clear();
 			mainPane.getChildren().get(3).setVisible(false);
 		});
-	}
+	} //End of method
 
-	protected void createLabelColor(AnchorPane mainPane, String color, double layoutY, String text, int childPosition) {
+	@Override
+	protected void createLabelColor(AnchorPane mainPane, String color, double layoutX, String text, int childPosition) {
 		Label label = new Label();
-		label.setLayoutY(layoutY);
+		label.setLayoutX(layoutX);
 		label.setStyle(color);
-		label.setPrefWidth(70);
+		label.setPrefWidth(80);
 		label.setPrefHeight(24);
 		label.setTextFill(Paint.valueOf("white"));
 		label.setAlignment(Pos.CENTER);
 		label.setText(text);
-		AnchorPane.setRightAnchor(label, 10.0);
+		AnchorPane.setTopAnchor(label, 87.0);
 		mainPane.getChildren().add(childPosition, label);
-		//((AnchorPane) mainPane.getChildren().get(1)).getChildren()
-	}
-	
+		
+	} //End of method
 	
 } // End of class

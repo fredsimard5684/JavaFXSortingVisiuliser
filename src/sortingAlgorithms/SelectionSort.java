@@ -112,11 +112,11 @@ public class SelectionSort extends SortingAlgorithms {
 				task.setOnRunning(e -> {
 					changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 					mainPane.getChildren().get(3).setVisible(true); //the cancel button is the fourth child of the main anchor pane
-					createLabelColor(mainPane, "-fx-background-color:#58BC50", 116, "COMPARE", 4);
-					createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 146, "SWAP", 5);
-					createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 176, "SORTED", 6);
-					createLabelColor(mainPane, "-fx-background-color:#ABB37B", 206, "FIRST VALUE", 7);
-					createLabelColor(mainPane, "-fx-background-color:#B34B89", 236, "MIN VALUE", 8);
+					createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE", 4);
+					createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 176, "SWAP", 5);
+					createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 276, "SORTED", 6);
+					createLabelColor(mainPane, "-fx-background-color:#ABB37B", 376, "FIRST VALUE", 7);
+					createLabelColor(mainPane, "-fx-background-color:#B34B89", 476, "MIN VALUE", 8);
 					Main.setTimer(mainPane, false);
 				});
 				task.setOnCancelled(e -> {
@@ -149,18 +149,18 @@ public class SelectionSort extends SortingAlgorithms {
 	} //End of method
 
 	@Override
-	protected void createLabelColor(AnchorPane mainPane, String color, double layoutY, String text, int childPosition) {
+	protected void createLabelColor(AnchorPane mainPane, String color, double layoutX, String text, int childPosition) {
 		Label label = new Label();
-		label.setLayoutY(layoutY);
+		label.setLayoutX(layoutX);
 		label.setStyle(color);
 		label.setPrefWidth(80);
 		label.setPrefHeight(24);
 		label.setTextFill(Paint.valueOf("white"));
 		label.setAlignment(Pos.CENTER);
 		label.setText(text);
-		AnchorPane.setRightAnchor(label, 10.0);
+		AnchorPane.setTopAnchor(label, 87.0);
 		mainPane.getChildren().add(childPosition, label);
 		
-	}
+	} //End of method
 
 }

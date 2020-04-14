@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import application.Main;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Paint;
@@ -21,24 +24,19 @@ public class InsertionSort extends SortingAlgorithms {
 	
 	private void doInsertionSort() {
 		int i, j;
-		ArrayList<Integer> list = new ArrayList<>();
 		for (i = 1; i < getArrayToSort().length; i++) {
 			int temp = getArrayToSort()[i];
 			getAnimation().add(new AnimationList(i, i, SortStatus.TEMP));
 			j = i;
 			getAnimation().add(new AnimationList(j, j, SortStatus.COMPARE)); //there's two j variables because we don't actually know where the temp value is
 			while (j > 0 && getArrayToSort()[j-1] >= temp) {
-				list.add(j);
 				getAnimation().add(new AnimationList(j, j-1, SortStatus.SHIFT));
 				getArrayToSort()[j] = getArrayToSort()[j-1];
+				getAnimation().add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
 				--j;
 				getAnimation().add(new AnimationList(j, j, SortStatus.COMPARE));
 			} //End of while loop
 			//Remove the color on the values that have been switched
-//
-			if (!list.isEmpty())
-				for (Integer integer : list) 
-					getAnimation().add(new AnimationList(integer, integer, SortStatus.REMOVE_SHIFT));
 			getAnimation().add(new AnimationList(j, j, SortStatus.SWAP));
 			getAnimation().add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
 			getArrayToSort()[j] = temp;
@@ -99,6 +97,7 @@ public class InsertionSort extends SortingAlgorithms {
 						Platform.runLater(() -> {
 							tempRectangle.setHeight(firstRect.getHeight());	
 						});
+						Thread.sleep(sleepTime);
 						break;
 					case SHIFT:
 						Platform.runLater(() -> {
@@ -106,11 +105,6 @@ public class InsertionSort extends SortingAlgorithms {
 							firstRect.setHeight(secondRect.getHeight());							
 						});
 						Thread.sleep(sleepTime);
-						break;
-					case REMOVE_SHIFT:
-						Platform.runLater(() -> {
-							firstRect.setFill(Paint.valueOf("#305580"));							
-						});
 						break;
 					default:
 						break;
@@ -129,14 +123,15 @@ public class InsertionSort extends SortingAlgorithms {
 		task.setOnRunning(e -> {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); //the cancel button is the fourth child of the main anchor pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 116, "COMPARE", 4);
-			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 146, "SWAP", 5);
-			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 176, "SORTED", 6);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE", 6);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 176, "SWAP", 7);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 276, "SORTED", 8);
+			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 376, "SHIFT", 9);
 			Main.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 6; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 			Main.getTimeElapse().setVisible(false);
@@ -144,7 +139,7 @@ public class InsertionSort extends SortingAlgorithms {
 		task.setOnSucceeded(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(false);
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 6; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 		});
@@ -153,6 +148,34 @@ public class InsertionSort extends SortingAlgorithms {
 		
 	}
 	
+
+	@Override
+	protected void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
+			AnchorPane mainPane) {
+		for (int i = 0; i < titlePane.getChildren().size(); i++)
+			titlePane.getChildren().get(i).setDisable(isDisable);
+		((Button) mainPane.getChildren().get(3)).setOnAction(e -> {
+			task.cancel();
+			flowPane.getChildren().clear();
+			mainPane.getChildren().get(3).setVisible(false);
+		});
+		
+	} //End of method
+
+	@Override
+	protected void createLabelColor(AnchorPane mainPane, String color, double layoutX, String text, int childPosition) {
+		Label label = new Label();
+		label.setLayoutX(layoutX);
+		label.setStyle(color);
+		label.setPrefWidth(80);
+		label.setPrefHeight(24);
+		label.setTextFill(Paint.valueOf("white"));
+		label.setAlignment(Pos.CENTER);
+		label.setText(text);
+		AnchorPane.setTopAnchor(label, 87.0);
+		mainPane.getChildren().add(childPosition, label);
+		
+	} //End of method
 	private Rectangle createTempRectangle(int height, Paint color) {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setWidth(29);
@@ -172,18 +195,4 @@ public class InsertionSort extends SortingAlgorithms {
 		AnchorPane.setBottomAnchor(text, 120.0);
 		return text;
 	}
-
-	@Override
-	protected void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
-			AnchorPane mainPane) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void createLabelColor(AnchorPane mainPane, String color, double layoutY, String text, int childPosition) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
