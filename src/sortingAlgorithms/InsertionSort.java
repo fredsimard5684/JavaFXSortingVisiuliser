@@ -28,8 +28,9 @@ public class InsertionSort extends SortingAlgorithms {
 		for (i = 1; i < getArrayToSort().length; i++) {
 			int temp = getArrayToSort()[i];
 			j = i;
-			getAnimation().add(new AnimationList(i, i, SortStatus.TEMP));
-			getAnimation().add(new AnimationList(j, j, SortStatus.COMPARE)); // there's two j variables because we don't
+			
+			getAnimation().add(new AnimationList(i, i - 1, SortStatus.TEMP)); // there's two j variables because we
+																				// don't
 																				// actually know where the temp value is
 			// Try to find a value that is inferior to the temp value
 			while (j > 0 && getArrayToSort()[j - 1] >= temp) {
@@ -39,13 +40,18 @@ public class InsertionSort extends SortingAlgorithms {
 				getAnimation().add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
 
 				--j;
+				
+				if (j > 0)
+					getAnimation().add(new AnimationList(j, j - 1, SortStatus.COMPARE));
 
-				getAnimation().add(new AnimationList(j, j, SortStatus.COMPARE));
 			} // End of while loop
 			getArrayToSort()[j] = temp;
 
-			getAnimation().add(new AnimationList(j, j, SortStatus.SWAP));
-			getAnimation().add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
+			getAnimation().add(new AnimationList(j, j, SortStatus.INSERT_VAL));
+			if (j > 0)
+				getAnimation().add(new AnimationList(j, j - 1, SortStatus.REMOVE_FOCUS));
+			else 
+				getAnimation().add(new AnimationList(0, 0, SortStatus.REMOVE_FOCUS));
 		} // End of for loop
 	} // End of method
 
@@ -61,14 +67,15 @@ public class InsertionSort extends SortingAlgorithms {
 		doInsertionSort();
 
 		// Creating temp rectangle and text to show what the temp value is
-		Rectangle tempRectangle = createTempRectangle(700, Paint.valueOf("red"));
+		Rectangle tempRectangle = createTempRectangle(700, Paint.valueOf("#58BC50"));
 		Text tempText = createTempText();
 
 		// Adding the temp values to the scene
 		mainPane.getChildren().add(tempRectangle);
 		mainPane.getChildren().add(tempText);
 
-		// Create a new task with a new thread that will update the GUI while running the loop
+		// Create a new task with a new thread that will update the GUI while running
+		// the loop
 		Task<Void> task = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -92,16 +99,15 @@ public class InsertionSort extends SortingAlgorithms {
 			switch (animationList.getSortStatus()) {
 			case COMPARE:
 				Platform.runLater(() -> {
-					firstRect.setFill(Paint.valueOf("#58BC50"));
-					;
-					tempRectangle.setFill(Paint.valueOf("#58BC50"));
+					firstRect.setFill(Paint.valueOf("turquoise"));
+					secondRect.setFill(Paint.valueOf("#58BC50"));
 				});
 				Thread.sleep(sleepTime);
 				break;
-			case SWAP:
+			case INSERT_VAL:
 				Platform.runLater(() -> {
 					firstRect.setFill(Paint.valueOf("#FFB3B8"));
-					tempRectangle.setFill(Paint.valueOf("#FFB3B8"));
+//					tempRectangle.setFill(Paint.valueOf("#FFB3B8"));
 					firstRect.setHeight(tempRectangle.getHeight());
 				});
 				Thread.sleep(sleepTime);
@@ -113,7 +119,11 @@ public class InsertionSort extends SortingAlgorithms {
 				});
 				break;
 			case TEMP:
-				Platform.runLater(() -> tempRectangle.setHeight(firstRect.getHeight()));
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("turquoise"));
+					secondRect.setFill(Paint.valueOf("#58BC50"));
+					tempRectangle.setHeight(firstRect.getHeight());
+				});
 				Thread.sleep(sleepTime);
 				break;
 			case SHIFT:
@@ -142,16 +152,17 @@ public class InsertionSort extends SortingAlgorithms {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
 															// pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE", 6);
-			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 176, "SWAP", 7);
-			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 276, "SORTED", 8);
-			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 376, "SHIFT", 9);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE TEMP", 6);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "INSERT TEMP", 7);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, "SORTED", 8);
+			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 436, "SHIFT", 9);
+			createLabelColor(mainPane, "-fx-background-color:turquoise", 556, "CURRENT VALUE", 10);
 			Main.setTimer(mainPane, false);
 		});
 
 		task.setOnCancelled(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 7; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 			Main.getTimeElapse().setVisible(false);
@@ -160,7 +171,7 @@ public class InsertionSort extends SortingAlgorithms {
 		task.setOnSucceeded(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(false);
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 7; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 		});
@@ -186,7 +197,7 @@ public class InsertionSort extends SortingAlgorithms {
 		Label label = new Label();
 		label.setLayoutX(layoutX);
 		label.setStyle(color);
-		label.setPrefWidth(80);
+		label.setPrefWidth(100);
 		label.setPrefHeight(24);
 		label.setTextFill(Paint.valueOf("white"));
 		label.setAlignment(Pos.CENTER);

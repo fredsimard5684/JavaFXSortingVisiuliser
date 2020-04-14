@@ -27,7 +27,6 @@ public class SelectionSort extends SortingAlgorithms {
 				getAnimation().add(new AnimationList(currentMinValue, j, SortStatus.COMPARE));
 				if (getArrayToSort()[j] < getArrayToSort()[currentMinValue]) {
 					getAnimation().add(new AnimationList(currentMinValue, currentMinValue, SortStatus.REMOVE_FOCUS));
-					getAnimation().add(new AnimationList(firstValueOfLoop, firstValueOfLoop, SortStatus.FIRST_VALUE));
 					currentMinValue = j;
 				} // End of if
 				getAnimation().add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
@@ -80,9 +79,9 @@ public class SelectionSort extends SortingAlgorithms {
 
 			switch (animationList.getSortStatus()) {
 			case COMPARE:
+				String color = firstRect.getFill().toString().equals("0xffb3b8ff") ? "#58BC50": "#B34B89";
 				Platform.runLater(() -> {
-					firstRect.setFill(Paint.valueOf("#B34B89"));
-					;
+					firstRect.setFill(Paint.valueOf(color));
 					secondRect.setFill(Paint.valueOf("#58BC50"));
 				});
 				Thread.sleep(sleepTime);
@@ -110,11 +109,6 @@ public class SelectionSort extends SortingAlgorithms {
 					secondRect.setFill(Paint.valueOf("#8BA9CC"));
 				});
 				break;
-			case FIRST_VALUE:
-				Platform.runLater(() -> {
-					firstRect.setFill(Paint.valueOf("#ABB37B"));
-				});
-				break;
 			default:
 				break;
 			} // End of switch
@@ -127,16 +121,15 @@ public class SelectionSort extends SortingAlgorithms {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
 															// pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE", 4);
-			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 176, "SWAP", 5);
-			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 276, "SORTED", 6);
-			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 376, "FIRST VALUE", 7);
-			createLabelColor(mainPane, "-fx-background-color:#B34B89", 476, "MIN VALUE", 8);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE MIN", 4);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "SWAP", 5);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, "SORTED", 6);
+			createLabelColor(mainPane, "-fx-background-color:#B34B89", 436, "MIN VALUE", 7);
 			Main.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 4; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 			Main.getTimeElapse().setVisible(false);
@@ -144,7 +137,7 @@ public class SelectionSort extends SortingAlgorithms {
 		task.setOnSucceeded(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(false);
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 4; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 		});
@@ -167,7 +160,7 @@ public class SelectionSort extends SortingAlgorithms {
 		Label label = new Label();
 		label.setLayoutX(layoutX);
 		label.setStyle(color);
-		label.setPrefWidth(80);
+		label.setPrefWidth(100);
 		label.setPrefHeight(24);
 		label.setTextFill(Paint.valueOf("white"));
 		label.setAlignment(Pos.CENTER);
