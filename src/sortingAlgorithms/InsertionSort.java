@@ -23,35 +23,35 @@ public class InsertionSort extends SortingAlgorithms {
 	}
 
 	// Do the insertion sort algorithm
-	private void doInsertionSort() {
+	private void doInsertionSort(int[] arrayToSort, ArrayList<AnimationList> animationList) {
 		int i, j;
-		for (i = 1; i < getArrayToSort().length; i++) {
-			int temp = getArrayToSort()[i];
+		for (i = 1; i < arrayToSort.length; i++) {
+			int temp = arrayToSort[i];
 			j = i;
 			
-			getAnimation().add(new AnimationList(i, i - 1, SortStatus.TEMP)); // there's two j variables because we
+			animationList.add(new AnimationList(i, i - 1, SortStatus.TEMP)); // there's two j variables because we
 																				// don't
 																				// actually know where the temp value is
 			// Try to find a value that is inferior to the temp value
-			while (j > 0 && getArrayToSort()[j - 1] >= temp) {
-				getArrayToSort()[j] = getArrayToSort()[j - 1];
+			while (j > 0 && arrayToSort[j - 1] >= temp) {
+				arrayToSort[j] = arrayToSort[j - 1];
 
-				getAnimation().add(new AnimationList(j, j - 1, SortStatus.SHIFT));
-				getAnimation().add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
+				animationList.add(new AnimationList(j, j - 1, SortStatus.SHIFT));
+				animationList.add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
 
 				--j;
 				
 				if (j > 0)
-					getAnimation().add(new AnimationList(j, j - 1, SortStatus.COMPARE));
+					animationList.add(new AnimationList(j, j - 1, SortStatus.COMPARE));
 
 			} // End of while loop
-			getArrayToSort()[j] = temp;
+			arrayToSort[j] = temp;
 
-			getAnimation().add(new AnimationList(j, j, SortStatus.INSERT_VAL));
+			animationList.add(new AnimationList(j, j, SortStatus.INSERT_VAL));
 			if (j > 0)
-				getAnimation().add(new AnimationList(j, j - 1, SortStatus.REMOVE_FOCUS));
+				animationList.add(new AnimationList(j, j - 1, SortStatus.REMOVE_FOCUS));
 			else 
-				getAnimation().add(new AnimationList(0, 0, SortStatus.REMOVE_FOCUS));
+				animationList.add(new AnimationList(0, 0, SortStatus.REMOVE_FOCUS));
 		} // End of for loop
 	} // End of method
 
@@ -64,7 +64,7 @@ public class InsertionSort extends SortingAlgorithms {
 			return;
 		}
 		// Call the insertion sort algorithm so that the animation can be displayed
-		doInsertionSort();
+		doInsertionSort(getArrayToSort(), getAnimation());
 
 		// Creating temp rectangle and text to show what the temp value is
 		Rectangle tempRectangle = createTempRectangle(700, Paint.valueOf("#58BC50"));
@@ -79,7 +79,7 @@ public class InsertionSort extends SortingAlgorithms {
 		Task<Void> task = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
-				doAnimation(flowPane, sleepTime, tempRectangle);
+				doAnimation(getAnimation(), flowPane, sleepTime, tempRectangle);
 				return null;
 			} // End of method call
 		}; // End of Task
@@ -89,14 +89,14 @@ public class InsertionSort extends SortingAlgorithms {
 
 	} // End of method
 
-	private void doAnimation(FlowPane flowPane, int sleepTime, Rectangle tempRectangle) throws InterruptedException {
+	private void doAnimation(ArrayList<AnimationList> animationList, FlowPane flowPane, int sleepTime, Rectangle tempRectangle) throws InterruptedException {
 		// Loop through all the animation where the bubble sort algorithm is doing
 		// something
-		for (AnimationList animationList : getAnimation()) {
-			Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animationList.getFirstValue());
-			Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animationList.getSecondValue());
+		for (AnimationList animation : animationList) {
+			Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animation.getFirstValue());
+			Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animation.getSecondValue());
 
-			switch (animationList.getSortStatus()) {
+			switch (animation.getSortStatus()) {
 			case COMPARE:
 				Platform.runLater(() -> {
 					firstRect.setFill(Paint.valueOf("turquoise"));

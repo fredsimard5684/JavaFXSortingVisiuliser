@@ -1,5 +1,7 @@
 package sortingAlgorithms;
 
+import java.util.ArrayList;
+
 import application.Main;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -17,34 +19,34 @@ public class SelectionSort extends SortingAlgorithms {
 		super(array);
 	}
 
-	private void doSelectionSort() {
+	private void doSelectionSort(int[] arrayToSort, ArrayList<AnimationList> animationLists) {
 		int firstValueOfLoop;
 		int currentMinValue;
-		for (int i = 0; i < getArrayToSort().length; i++) {
+		for (int i = 0; i < arrayToSort.length; i++) {
 			firstValueOfLoop = i;
 			currentMinValue = firstValueOfLoop;
-			for (int j = i + 1; j < getArrayToSort().length; j++) {
-				getAnimation().add(new AnimationList(currentMinValue, j, SortStatus.COMPARE));
-				if (getArrayToSort()[j] < getArrayToSort()[currentMinValue]) {
-					getAnimation().add(new AnimationList(currentMinValue, currentMinValue, SortStatus.REMOVE_FOCUS));
+			for (int j = i + 1; j < arrayToSort.length; j++) {
+				animationLists.add(new AnimationList(currentMinValue, j, SortStatus.COMPARE));
+				if (arrayToSort[j] < arrayToSort[currentMinValue]) {
+					animationLists.add(new AnimationList(currentMinValue, currentMinValue, SortStatus.REMOVE_FOCUS));
 					currentMinValue = j;
 				} // End of if
-				getAnimation().add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
+				animationLists.add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
 			} // End of internal loop
-			int temp = getArrayToSort()[firstValueOfLoop];
-			getArrayToSort()[firstValueOfLoop] = getArrayToSort()[currentMinValue];
-			getArrayToSort()[currentMinValue] = temp;
+			int temp = arrayToSort[firstValueOfLoop];
+			arrayToSort[firstValueOfLoop] = arrayToSort[currentMinValue];
+			arrayToSort[currentMinValue] = temp;
 			if (firstValueOfLoop != currentMinValue) {
-				getAnimation().add(new AnimationList(firstValueOfLoop, currentMinValue, SortStatus.SWAP));
-				getAnimation().add(new AnimationList(firstValueOfLoop, currentMinValue, SortStatus.COMPARE)); // makes
+				animationLists.add(new AnimationList(firstValueOfLoop, currentMinValue, SortStatus.SWAP));
+				animationLists.add(new AnimationList(firstValueOfLoop, currentMinValue, SortStatus.COMPARE)); // makes
 																												// the
 																												// animation
 																												// smoother,
 																												// not
 																												// necessary
 			}
-			getAnimation().add(new AnimationList(firstValueOfLoop, currentMinValue, SortStatus.REMOVE_FOCUS));
-			getAnimation().add(new AnimationList(firstValueOfLoop, firstValueOfLoop, SortStatus.SORTED));
+			animationLists.add(new AnimationList(firstValueOfLoop, currentMinValue, SortStatus.REMOVE_FOCUS));
+			animationLists.add(new AnimationList(firstValueOfLoop, firstValueOfLoop, SortStatus.SORTED));
 		} // End of external loop
 	}
 
@@ -56,13 +58,13 @@ public class SelectionSort extends SortingAlgorithms {
 					"There are no values to do the sort, please enter or generate a new array before pressing the button!");
 			return;
 		}
-		doSelectionSort(); // Call the selection sort algorithm
+		doSelectionSort(getArrayToSort(), getAnimation()); // Call the selection sort algorithm
 		// Create a new task with a new thread that will update the GUI while running
 		// the loop
 		Task<Void> task = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
-				doAnimation(flowPane, sleepTime);
+				doAnimation(getAnimation(), flowPane, sleepTime);
 				return null;
 			} // End of method call
 		}; // End of Task
@@ -70,10 +72,10 @@ public class SelectionSort extends SortingAlgorithms {
 		new Thread(task).start();
 	} // End of method
 
-	private void doAnimation(FlowPane flowPane, int sleepTime) throws InterruptedException {
+	private void doAnimation(ArrayList<AnimationList> animationLists, FlowPane flowPane, int sleepTime) throws InterruptedException {
 		// Loop through all the animation where the bubble sort algorithm is doing
 		// something
-		for (AnimationList animationList : getAnimation()) {
+		for (AnimationList animationList : animationLists) {
 			Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animationList.getFirstValue());
 			Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animationList.getSecondValue());
 

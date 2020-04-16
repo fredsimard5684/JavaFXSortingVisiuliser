@@ -41,6 +41,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import sortingAlgorithms.BubbleSort;
 import sortingAlgorithms.InsertionSort;
+import sortingAlgorithms.QuickSort;
 import sortingAlgorithms.SelectionSort;
 import sortingAlgorithms.SortingAlgorithms;
 
@@ -187,6 +188,8 @@ public class Controller implements Initializable {
 		case "Merge sort":
 			break;
 		case "Quicksort":
+			SortingAlgorithms quickSort = new QuickSort(copyArrayGenerated);
+			quickSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
 			break;
 		case "Heap sort":
 			break;
