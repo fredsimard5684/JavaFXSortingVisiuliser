@@ -353,7 +353,7 @@ public class Controller implements Initializable {
 		for (int i = 0; i < array.length; i++) {
 			Rectangle rectangle = new Rectangle(950 / array.length, array[i]);
 			rectangle.setFill(Paint.valueOf("#305580"));
-			int marginRight = (array.length < 100 ? marginRight = 3 : array.length < 200 ? 2 : 1);
+			int marginRight = (array.length < 100 ? marginRight = 3 : array.length < 150 ? 2 : 1);
 			FlowPane.setMargin(rectangle, new Insets(0, 0, 0, marginRight));
 			diagramPane.getChildren().add(rectangle);
 		} // End of loop

@@ -37,7 +37,7 @@ public class Main extends Application {
 			scene.heightProperty().addListener(e -> {
 				System.out.println(scene.getHeight()); // Debug line
 			});
-			primaryStage.setMinWidth(1370);
+			primaryStage.setMinWidth(1400);
 			primaryStage.setMinHeight(900);
 			primaryStage.setOnCloseRequest(e -> {
 				Platform.exit(); // Exit the UI
