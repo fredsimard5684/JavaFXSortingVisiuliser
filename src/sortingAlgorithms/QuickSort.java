@@ -46,16 +46,28 @@ public class QuickSort extends SortingAlgorithms {
 	private int doMedianOf3(int[] array, int left, int right, ArrayList<AnimationList> animationLists) {
 		int center = (left + right) / 2;
 
-		if (array[left] > array[center]) {
+		// First compare
+		animationLists.add(new AnimationList(left, center, SortStatus.MEDIAN_COMPARE));
+		if (array[left] > array[center])
 			swap(array, left, center, animationLists);
-		}
-		if (array[left] > array[right]) {
-			swap(array, left, right, animationLists);
-		}
-		if (array[center] > array[right]) {
-			swap(array, center, right, animationLists);
-		}
+		else
+			animationLists.add(new AnimationList(left, center, SortStatus.REMOVE_FOCUS));
 
+		// Second compare
+		animationLists.add(new AnimationList(left, right, SortStatus.MEDIAN_COMPARE));
+		if (array[left] > array[right])
+			swap(array, left, right, animationLists);
+		else
+			animationLists.add(new AnimationList(left, right, SortStatus.REMOVE_FOCUS));
+
+		// Third compare
+		animationLists.add(new AnimationList(center, right, SortStatus.MEDIAN_COMPARE));
+		if (array[center] > array[right])
+			swap(array, center, right, animationLists);
+		else
+			animationLists.add(new AnimationList(center, right, SortStatus.REMOVE_FOCUS));
+
+		// Setting the pivot
 		swap(array, center, right - 1, animationLists); // put the pivot at right -1
 		animationLists.add(new AnimationList(right - 1, right - 1, SortStatus.PIVOT));
 		return right - 1;
@@ -68,32 +80,26 @@ public class QuickSort extends SortingAlgorithms {
 		int rightptr = right - 1; // At the pivot
 		animationLists.add(new AnimationList(leftptr, rightptr - 1, SortStatus.COMPARE));
 
-		while (leftptr < rightptr) {
+		while (leftptr < rightptr) { // While left position isn't superior or equals to right position
 
 			while (array[++leftptr] < array[pivot]) {
 				animationLists.add(new AnimationList(leftptr - 1, leftptr - 1, SortStatus.REMOVE_FOCUS));
 				animationLists.add(new AnimationList(leftptr, rightptr - 1, SortStatus.COMPARE));
 
-			}
-			if (array[leftptr] >= array[pivot]) {
+			} // End of leftptr while
+
+			if (array[leftptr] >= array[pivot]) // Make sure to remove the focus
 				animationLists.add(new AnimationList(leftptr - 1, leftptr - 1, SortStatus.REMOVE_FOCUS));
-				// if (leftptr != rightptr)
-				// animationLists.add(new AnimationList(leftptr, rightptr - 1,
-				// SortStatus.COMPARE));
-			}
 
 			while (array[--rightptr] > array[pivot]) {
-				if (rightptr + 1 != pivot)
+				if (rightptr + 1 != pivot) // Make sure that the color of the pivot doesn't get overwrite
 					animationLists.add(new AnimationList(rightptr + 1, rightptr + 1, SortStatus.REMOVE_FOCUS));
 				animationLists.add(new AnimationList(leftptr, rightptr, SortStatus.COMPARE));
-			}
+			} // End of rightptr
 
-			if (array[rightptr] <= array[pivot]) {
+			if (array[rightptr] <= array[pivot]) // Make sure to remove the focus unless it is the pivot
 				if (rightptr + 1 != pivot)
 					animationLists.add(new AnimationList(rightptr + 1, rightptr + 1, SortStatus.REMOVE_FOCUS));
-				// if (leftptr != rightptr)
-				// animationLists.add(new AnimationList(leftptr, rightptr, SortStatus.COMPARE));
-			}
 
 			if (leftptr < rightptr) {
 				animationLists.add(new AnimationList(leftptr, rightptr, SortStatus.COMPARE)); // Only if the values to
@@ -102,9 +108,11 @@ public class QuickSort extends SortingAlgorithms {
 				swap(array, leftptr, rightptr, animationLists);
 				animationLists.add(new AnimationList(leftptr, rightptr - 1, SortStatus.COMPARE));
 			}
-		}
+		} // End of external while
+
 		swap(array, leftptr, right - 1, animationLists); // swap the pivot value with leftptr
-		animationLists.add(new AnimationList(leftptr, leftptr, SortStatus.SORTED));
+		animationLists.add(new AnimationList(leftptr, leftptr, SortStatus.SORTED)); // We are sure that left value is
+																					// sorted
 		return leftptr; // new pivot
 	} // End of method
 
@@ -112,35 +120,46 @@ public class QuickSort extends SortingAlgorithms {
 	// small
 	private void manualSort(int[] array, int left, int right, int size, ArrayList<AnimationList> animationLists) {
 		if (size <= 1) {
+			animationLists.add(new AnimationList(left, left, SortStatus.MANUAL_COMPARE));
 			animationLists.add(new AnimationList(left, left, SortStatus.SORTED));
 			return;
-		} //End of if
-		
+		} // End of if
+
 		if (size <= 2) {
-			if(array[left] > array[right]) {
-			swap(array, left, right, animationLists);
-			animationLists.add(new AnimationList(left, right, SortStatus.SORTED));
-			} else { //Prevent repeated execution
-				animationLists.add(new AnimationList(left, right, SortStatus.SORTED));
-			} //End of else
-		} else { //If size is 3
-			//First compare
-			if (array[left] > array[right - 1]) { //right - 1 is the center
-				swap(array, left, right -1, animationLists);
-			}
-			//Second compare
+			animationLists.add(new AnimationList(left, right, SortStatus.MANUAL_COMPARE));
 			if (array[left] > array[right])
 				swap(array, left, right, animationLists);
-			animationLists.add(new AnimationList(left, left, SortStatus.SORTED));
-			
-			//Third compare
+			animationLists.add(new AnimationList(left, right, SortStatus.SORTED)); // We are sure that it is sorted
+
+		} else { // If size is 3
+
+			// First compare
+			animationLists.add(new AnimationList(left, right, SortStatus.MANUAL_COMPARE));
+			if (array[left] > array[right - 1]) // right - 1 is the center
+				swap(array, left, right - 1, animationLists);
+			else
+				animationLists.add(new AnimationList(left, right, SortStatus.REMOVE_FOCUS)); // Can't be sure that left
+																								// or right is sorted
+
+			// Second compare
+			animationLists.add(new AnimationList(left, right, SortStatus.MANUAL_COMPARE));
+			if (array[left] > array[right])
+				swap(array, left, right, animationLists);
+			else
+				animationLists.add(new AnimationList(left, right, SortStatus.REMOVE_FOCUS)); // Can't be sure that right
+																								// is sorted
+			animationLists.add(new AnimationList(left, left, SortStatus.SORTED)); // Left is sorted for sure
+
+			// Third compare
+			animationLists.add(new AnimationList(right - 1, right, SortStatus.MANUAL_COMPARE));
 			if (array[right - 1] > array[right])
 				swap(array, right - 1, right, animationLists);
-			animationLists.add(new AnimationList(right - 1, right, SortStatus.SORTED));
-		} //End of else
+			animationLists.add(new AnimationList(right - 1, right, SortStatus.SORTED)); // Center and right is sorted
+		} // End of else
 	} // End of method
 
 	@Override
+	// Do the sort with the animation
 	public void sort(FlowPane flowPane, AnchorPane titlePane, AnchorPane mainPane, int sleepTime)
 			throws InterruptedException {
 		doQuickSort(getArrayToSort(), 0, getArrayToSort().length - 1, getAnimation());
@@ -160,20 +179,23 @@ public class QuickSort extends SortingAlgorithms {
 	} // End of method
 
 	@Override
+	// Set the task on finished, on running and on cancelled
 	protected void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
 		task.setOnRunning(e -> {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
 															// pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE MIN", 4);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE PIVOT", 4);
 			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "SWAP", 5);
 			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, "SORTED", 6);
-			createLabelColor(mainPane, "-fx-background-color:#B34B89", 436, "MIN VALUE", 7);
+			createLabelColor(mainPane, "-fx-background-color:turquoise", 436, "MEDIAN COMPARE", 7);
+			createLabelColor(mainPane, "-fx-background-color:gray", 556, "MANUAL COMPARE", 8);
+			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 676, "PIVOT", 9);
 			Main.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 6; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 			Main.getTimeElapse().setVisible(false);
@@ -181,13 +203,14 @@ public class QuickSort extends SortingAlgorithms {
 		task.setOnSucceeded(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(false);
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 6; i++)
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 		});
 
 	} // End of method
 
+	// Method that selects and do the animation
 	private void doAnimation(ArrayList<AnimationList> animationLists, FlowPane flowPane, int sleepTime)
 			throws InterruptedException {
 
@@ -196,14 +219,11 @@ public class QuickSort extends SortingAlgorithms {
 			Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animation.getSecondValue());
 			switch (animation.getSortStatus()) {
 			case COMPARE:
-				if (!firstRect.getFill().toString().equals("0x58bc50ff")
-						&& !secondRect.getFill().toString().equals("0x58bc50ff")) {
-					Platform.runLater(() -> {
-						firstRect.setFill(Paint.valueOf("#58BC50"));
-						secondRect.setFill(Paint.valueOf("#58BC50"));
-					});
-					Thread.sleep(sleepTime);
-				}
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("#58BC50"));
+					secondRect.setFill(Paint.valueOf("#58BC50"));
+				});
+				Thread.sleep(sleepTime);
 				break;
 			case SWAP:
 				Platform.runLater(() -> {
@@ -229,21 +249,27 @@ public class QuickSort extends SortingAlgorithms {
 				});
 				break;
 			case PIVOT:
-				Platform.runLater(() -> firstRect.setFill(Paint.valueOf("yellow")));
+				Platform.runLater(() -> firstRect.setFill(Paint.valueOf("#ABB37B")));
 				break;
-			case LEFT_POINTER:
-				Platform.runLater(() -> firstRect.setFill(Paint.valueOf("#4B807A")));
+			case MEDIAN_COMPARE:
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("turquoise"));
+					secondRect.setFill(Paint.valueOf("turquoise"));
+				});
 				Thread.sleep(sleepTime);
 				break;
-			case RIGHT_POINTER:
-				Platform.runLater(() -> firstRect.setFill(Paint.valueOf("#3BCCBE")));
+			case MANUAL_COMPARE:
+				Platform.runLater(() -> {
+					firstRect.setFill(Paint.valueOf("gray"));
+					secondRect.setFill(Paint.valueOf("gray"));
+				});
 				Thread.sleep(sleepTime);
 				break;
 			default:
 				break;
 			} // End of switch
-		}
-	}
+		} // End of for
+	} // End of method
 
 	@Override
 	protected void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
@@ -263,7 +289,7 @@ public class QuickSort extends SortingAlgorithms {
 		Label label = new Label();
 		label.setLayoutX(layoutX);
 		label.setStyle(color);
-		label.setPrefWidth(100);
+		label.setPrefWidth(110);
 		label.setPrefHeight(24);
 		label.setTextFill(Paint.valueOf("white"));
 		label.setAlignment(Pos.CENTER);
