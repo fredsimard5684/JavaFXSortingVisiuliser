@@ -45,28 +45,18 @@ public class QuickSort extends SortingAlgorithms {
 
 	private int doMedianOf3(int[] array, int left, int right, ArrayList<AnimationList> animationLists) {
 		int center = (left + right) / 2;
-		
+
 		if (array[left] > array[center]) {
 			swap(array, left, center, animationLists);
-			animationLists.add(new AnimationList(left, center, SortStatus.MEDIAN_SORT));
-			animationLists.add(new AnimationList(left, center, SortStatus.REMOVE_FOCUS));
-		}  else {
-			
 		}
 		if (array[left] > array[right]) {
 			swap(array, left, right, animationLists);
-			animationLists.add(new AnimationList(left, right, SortStatus.MEDIAN_SORT));
-			animationLists.add(new AnimationList(left, right, SortStatus.REMOVE_FOCUS));
 		}
 		if (array[center] > array[right]) {
 			swap(array, center, right, animationLists);
-			animationLists.add(new AnimationList(center, right, SortStatus.MEDIAN_SORT));
-			animationLists.add(new AnimationList(center, right, SortStatus.REMOVE_FOCUS));
 		}
 
 		swap(array, center, right - 1, animationLists); // put the pivot at right -1
-		animationLists.add(new AnimationList(center, right - 1, SortStatus.MEDIAN_SORT));
-		animationLists.add(new AnimationList(center, right - 1, SortStatus.REMOVE_FOCUS));
 		animationLists.add(new AnimationList(right - 1, right - 1, SortStatus.PIVOT));
 		return right - 1;
 
@@ -110,14 +100,10 @@ public class QuickSort extends SortingAlgorithms {
 																								// compare are not the
 																								// one that will be swap
 				swap(array, leftptr, rightptr, animationLists);
-				animationLists.add(new AnimationList(leftptr, rightptr, SortStatus.SWAP));
-				animationLists.add(new AnimationList(leftptr, rightptr, SortStatus.REMOVE_FOCUS));
 				animationLists.add(new AnimationList(leftptr, rightptr - 1, SortStatus.COMPARE));
 			}
 		}
 		swap(array, leftptr, right - 1, animationLists); // swap the pivot value with leftptr
-		animationLists.add(new AnimationList(leftptr, right - 1, SortStatus.SWAP));
-		animationLists.add(new AnimationList(leftptr, right - 1, SortStatus.REMOVE_FOCUS));
 		animationLists.add(new AnimationList(leftptr, leftptr, SortStatus.SORTED));
 		return leftptr; // new pivot
 	} // End of method
@@ -126,7 +112,6 @@ public class QuickSort extends SortingAlgorithms {
 	// small
 	private void manualSort(int[] array, int left, int right, int size, ArrayList<AnimationList> animationLists) {
 		if (size <= 1) {
-			animationLists.add(new AnimationList(left, left, SortStatus.MANUAL_SORT));
 			animationLists.add(new AnimationList(left, left, SortStatus.SORTED));
 			return;
 		} //End of if
@@ -134,17 +119,15 @@ public class QuickSort extends SortingAlgorithms {
 		if (size <= 2) {
 			if(array[left] > array[right]) {
 			swap(array, left, right, animationLists);
-			animationLists.add(new AnimationList(left, right, SortStatus.MANUAL_SORT));
 			animationLists.add(new AnimationList(left, right, SortStatus.SORTED));
 			} else { //Prevent repeated execution
-				animationLists.add(new AnimationList(left, right, SortStatus.MANUAL_SORT));
 				animationLists.add(new AnimationList(left, right, SortStatus.SORTED));
 			} //End of else
 		} else { //If size is 3
 			//First compare
 			if (array[left] > array[right - 1]) { //right - 1 is the center
 				swap(array, left, right -1, animationLists);
-			} 
+			}
 			//Second compare
 			if (array[left] > array[right])
 				swap(array, left, right, animationLists);
