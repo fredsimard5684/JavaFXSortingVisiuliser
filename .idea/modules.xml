@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DesktopApp.iml" filepath="$PROJECT_DIR$/DesktopApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaFXDesktopApplication.iml" filepath="$PROJECT_DIR$/JavaFXDesktopApplication.iml" />
     </modules>
   </component>
 </project>
