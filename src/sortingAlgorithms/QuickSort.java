@@ -162,6 +162,11 @@ public class QuickSort extends SortingAlgorithms {
 	// Do the sort with the animation
 	public void sort(FlowPane flowPane, AnchorPane titlePane, AnchorPane mainPane, int sleepTime)
 			throws InterruptedException {
+		if (flowPane.getChildren().isEmpty()) { // If there are no rectangles in the GUI
+			Main.alertDialogIllegal(
+					"There are no values to do the sort, please enter or generate a new array before pressing the button!");
+			return;
+		}
 		doQuickSort(getArrayToSort(), 0, getArrayToSort().length - 1, getAnimation());
 
 		// Create a new task with a new thread that will update the GUI while running
