@@ -138,7 +138,12 @@ public class MergeSort extends SortingAlgorithms {
                     break;
             } // End of switch
         } // End of for
-
+        Platform.runLater(() -> {
+            for (int i = 0; i < getArrayToSort().length; i++) {
+                Rectangle rectangle = ((Rectangle) flowPane.getChildren().get(i));
+                rectangle.setFill(Paint.valueOf("#8BA9CC"));
+            } // End of for loop
+        });
     }
 
 
