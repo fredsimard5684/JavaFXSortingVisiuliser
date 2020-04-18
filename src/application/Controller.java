@@ -39,11 +39,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import sortingAlgorithms.BubbleSort;
-import sortingAlgorithms.InsertionSort;
-import sortingAlgorithms.QuickSort;
-import sortingAlgorithms.SelectionSort;
-import sortingAlgorithms.SortingAlgorithms;
+import sortingAlgorithms.*;
 
 public class Controller implements Initializable {
     // Instance variable
@@ -186,6 +182,8 @@ public class Controller implements Initializable {
                 insertionSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
                 break;
             case "Merge sort":
+                SortingAlgorithms mergeSort = new MergeSort(copyArrayGenerated);
+                mergeSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
                 break;
             case "Quicksort":
                 SortingAlgorithms quickSort = new QuickSort(copyArrayGenerated);
