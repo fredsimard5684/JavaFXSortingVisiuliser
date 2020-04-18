@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 public class MergeSort extends SortingAlgorithms {
     private int[] workSpace;
+
     public MergeSort(int[] array) {
         super(array);
         workSpace = Arrays.copyOfRange(array, 0, array.length);
@@ -40,21 +41,32 @@ public class MergeSort extends SortingAlgorithms {
         int j = middle + 1; //Seperate the workspace
 
         while (i <= middle && j <= high) { //Add the lowest number to the workspace
+            animationLists.add(new AnimationList(i, j, SortStatus.COMPARE));
+            animationLists.add(new AnimationList(i, j, SortStatus.REMOVE_FOCUS));
             if (workSpace[i] <= workSpace[j]) {
-                animationLists.add(new AnimationList(k, i, SortStatus.SWAP));
+                animationLists.add(new AnimationList(k, workSpace[i], SortStatus.SWAP));
+                animationLists.add(new AnimationList(k, k, SortStatus.REMOVE_FOCUS));
                 mainArray[k++] = workSpace[i++];
             } else {
-                animationLists.add(new AnimationList(k, j, SortStatus.SWAP));
+                animationLists.add(new AnimationList(k, workSpace[j], SortStatus.SWAP));
+                animationLists.add(new AnimationList(k, k, SortStatus.REMOVE_FOCUS));
                 mainArray[k++] = workSpace[j++];
             }
         }
         //Adding the rest of the numbers
+
         while (i <= middle) {
-            animationLists.add(new AnimationList(k, i, SortStatus.SWAP));
+            animationLists.add(new AnimationList(i, i, SortStatus.REMAINING_VALUE)); //Inserting the remaining value
+            animationLists.add(new AnimationList(i, i, SortStatus.REMOVE_FOCUS));
+            animationLists.add(new AnimationList(k, workSpace[i], SortStatus.SWAP));
+            animationLists.add(new AnimationList(k, k, SortStatus.REMOVE_FOCUS));
             mainArray[k++] = workSpace[i++];
         }
         while (j <= high) {
-            animationLists.add(new AnimationList(k, j, SortStatus.SWAP));
+            animationLists.add(new AnimationList(j, j, SortStatus.REMAINING_VALUE)); //Inserting the remaining value
+            animationLists.add(new AnimationList(j, j, SortStatus.REMOVE_FOCUS));
+            animationLists.add(new AnimationList(k, workSpace[j], SortStatus.SWAP));
+            animationLists.add(new AnimationList(k, k, SortStatus.REMOVE_FOCUS));
             mainArray[k++] = workSpace[j++];
         }
     } //End of method
@@ -85,11 +97,13 @@ public class MergeSort extends SortingAlgorithms {
     } // End of method
 
     private void doAnimation(ArrayList<AnimationList> animationLists, FlowPane flowPane, int sleepTime) throws InterruptedException {
+        //TODO FIX THE RECTANGLE NAME (First rect)
         for (AnimationList animation : animationLists) {
-            Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animation.getFirstValue());
-            Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animation.getSecondValue());
+
             switch (animation.getSortStatus()) {
                 case COMPARE:
+                    Rectangle firstRect = (Rectangle) flowPane.getChildren().get(animation.getFirstValue());
+                    Rectangle secondRect = (Rectangle) flowPane.getChildren().get(animation.getSecondValue());
                     Platform.runLater(() -> {
                         firstRect.setFill(Paint.valueOf("#58BC50"));
                         secondRect.setFill(Paint.valueOf("#58BC50"));
@@ -97,40 +111,26 @@ public class MergeSort extends SortingAlgorithms {
                     Thread.sleep(sleepTime);
                     break;
                 case SWAP:
+                    Rectangle mainArrayRect = (Rectangle) flowPane.getChildren().get(animation.getFirstValue());
                     Platform.runLater(() -> {
-                        firstRect.setFill(Paint.valueOf("#FFB3B8"));
-                        secondRect.setFill(Paint.valueOf("#FFB3B8"));
-                        firstRect.setHeight(workSpace[animation.getSecondValue()]);
-
+                        mainArrayRect.setFill(Paint.valueOf("#FFB3B8"));
+                        mainArrayRect.setHeight(animation.getSecondValue());
                     });
                     Thread.sleep(sleepTime);
                     break;
                 case REMOVE_FOCUS:
+                    Rectangle rectangleOne = (Rectangle) flowPane.getChildren().get(animation.getFirstValue());
+                    Rectangle rectangleTwo = (Rectangle) flowPane.getChildren().get(animation.getSecondValue());
                     Platform.runLater(() -> {
-                        firstRect.setFill(Paint.valueOf("#305580"));
-                        secondRect.setFill(Paint.valueOf("#305580"));
+                        rectangleOne.setFill(Paint.valueOf("#305580"));
+                        rectangleTwo.setFill(Paint.valueOf("#305580"));
                     });
                     break;
-                case SORTED:
+                case REMAINING_VALUE:
+                    Rectangle rectOne = (Rectangle) flowPane.getChildren().get(animation.getFirstValue());
+                    Rectangle rectTwo = (Rectangle) flowPane.getChildren().get(animation.getSecondValue());
                     Platform.runLater(() -> {
-                        firstRect.setFill(Paint.valueOf("#8BA9CC"));
-                        secondRect.setFill(Paint.valueOf("#8BA9CC"));
-                    });
-                    break;
-                case PIVOT:
-                    Platform.runLater(() -> firstRect.setFill(Paint.valueOf("#ABB37B")));
-                    break;
-                case MEDIAN_COMPARE:
-                    Platform.runLater(() -> {
-                        firstRect.setFill(Paint.valueOf("turquoise"));
-                        secondRect.setFill(Paint.valueOf("turquoise"));
-                    });
-                    Thread.sleep(sleepTime);
-                    break;
-                case MANUAL_COMPARE:
-                    Platform.runLater(() -> {
-                        firstRect.setFill(Paint.valueOf("gray"));
-                        secondRect.setFill(Paint.valueOf("gray"));
+                        rectOne.setFill(Paint.valueOf("turquoise"));
                     });
                     Thread.sleep(sleepTime);
                     break;
@@ -148,17 +148,16 @@ public class MergeSort extends SortingAlgorithms {
             changeButtonStatus(true, task, titlePane, flowPane, mainPane);
             mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
             // pane
-            createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE PIVOT", 4);
-            createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "SWAP", 5);
+            createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE", 4);
+            createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "OVERWRITE VAL", 5);
             createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, "SORTED", 6);
-            createLabelColor(mainPane, "-fx-background-color:turquoise", 436, "MEDIAN COMPARE", 7);
-            createLabelColor(mainPane, "-fx-background-color:gray", 556, "MANUAL COMPARE", 8);
-            createLabelColor(mainPane, "-fx-background-color:#ABB37B", 676, "PIVOT", 9);
+            createLabelColor(mainPane, "-fx-background-color:turquoise", 436, "ADD REMAIN VAL", 7);
+
             Main.setTimer(mainPane, false);
         });
         task.setOnCancelled(e -> {
             changeButtonStatus(false, task, titlePane, flowPane, mainPane);
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
                 mainPane.getChildren().remove(4);
             Main.setTimer(mainPane, true);
             Main.getTimeElapse().setVisible(false);
@@ -166,7 +165,7 @@ public class MergeSort extends SortingAlgorithms {
         task.setOnSucceeded(e -> {
             changeButtonStatus(false, task, titlePane, flowPane, mainPane);
             mainPane.getChildren().get(3).setVisible(false);
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
                 mainPane.getChildren().remove(4);
             Main.setTimer(mainPane, true);
         });

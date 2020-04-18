@@ -105,6 +105,8 @@ public class Controller implements Initializable {
         // Generate on load a random array
         slider.setValue(10);
         initialiseRectangleBars(generateArray((int) slider.getValue()));
+        System.out.println(11/6);
+        System.out.println((int) Math.floor(11/6));
     } // End of method
 
     //Set the rectangles bar with the associated speed
