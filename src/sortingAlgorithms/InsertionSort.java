@@ -147,16 +147,16 @@ public class InsertionSort extends SortingAlgorithms {
 	}
 
 	// Make the code more cleaner
-	protected void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
+	private void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
 		task.setOnRunning(e -> {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
 															// pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE TEMP", 6);
-			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "INSERT TEMP", 7);
-			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, "SORTED", 8);
-			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 436, "SHIFT", 9);
-			createLabelColor(mainPane, "-fx-background-color:turquoise", 556, "CURRENT VALUE", 10);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, 100, "COMPARE TEMP", 6);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, 100, "INSERT TEMP", 7);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, 100, "SORTED", 8);
+			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 436, 100, "SHIFT", 9);
+			createLabelColor(mainPane, "-fx-background-color:turquoise", 556,100, "CURRENT VALUE", 10);
 			Main.setTimer(mainPane, false);
 		});
 
@@ -175,36 +175,6 @@ public class InsertionSort extends SortingAlgorithms {
 				mainPane.getChildren().remove(4);
 			Main.setTimer(mainPane, true);
 		});
-	} // End of method
-
-	@Override
-	// Disable the buttons if needed
-	protected void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
-			AnchorPane mainPane) {
-		for (int i = 0; i < titlePane.getChildren().size(); i++)
-			titlePane.getChildren().get(i).setDisable(isDisable);
-		((Button) mainPane.getChildren().get(3)).setOnAction(e -> {
-			task.cancel();
-			flowPane.getChildren().clear();
-			mainPane.getChildren().get(3).setVisible(false);
-		});
-
-	} // End of method
-
-	@Override
-	// Create the labels that indicates wich color does what
-	protected void createLabelColor(AnchorPane mainPane, String color, double layoutX, String text, int childPosition) {
-		Label label = new Label();
-		label.setLayoutX(layoutX);
-		label.setStyle(color);
-		label.setPrefWidth(100);
-		label.setPrefHeight(24);
-		label.setTextFill(Paint.valueOf("white"));
-		label.setAlignment(Pos.CENTER);
-		label.setText(text);
-		AnchorPane.setTopAnchor(label, 87.0);
-		mainPane.getChildren().add(childPosition, label);
-
 	} // End of method
 
 	private Rectangle createTempRectangle(int height, Paint color) {

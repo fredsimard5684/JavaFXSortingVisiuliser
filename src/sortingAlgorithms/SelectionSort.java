@@ -118,15 +118,15 @@ public class SelectionSort extends SortingAlgorithms {
 	}
 
 	// Make the code more cleaner
-	protected void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
+	private void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
 		task.setOnRunning(e -> {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
 															// pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE MIN", 4);
-			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "SWAP", 5);
-			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, "SORTED", 6);
-			createLabelColor(mainPane, "-fx-background-color:#B34B89", 436, "MIN VALUE", 7);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, 100, "COMPARE MIN", 4);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, 100, "SWAP", 5);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, 100, "SORTED", 6);
+			createLabelColor(mainPane, "-fx-background-color:#B34B89", 436, 100, "MIN VALUE", 7);
 			Main.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
@@ -144,32 +144,4 @@ public class SelectionSort extends SortingAlgorithms {
 			Main.setTimer(mainPane, true);
 		});
 	} // End of method
-
-	@Override
-	protected void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
-			AnchorPane mainPane) {
-		for (int i = 0; i < titlePane.getChildren().size(); i++)
-			titlePane.getChildren().get(i).setDisable(isDisable);
-		((Button) mainPane.getChildren().get(3)).setOnAction(e -> {
-			task.cancel();
-			flowPane.getChildren().clear();
-			mainPane.getChildren().get(3).setVisible(false);
-		});
-	} // End of method
-
-	@Override
-	protected void createLabelColor(AnchorPane mainPane, String color, double layoutX, String text, int childPosition) {
-		Label label = new Label();
-		label.setLayoutX(layoutX);
-		label.setStyle(color);
-		label.setPrefWidth(100);
-		label.setPrefHeight(24);
-		label.setTextFill(Paint.valueOf("white"));
-		label.setAlignment(Pos.CENTER);
-		label.setText(text);
-		AnchorPane.setTopAnchor(label, 87.0);
-		mainPane.getChildren().add(childPosition, label);
-
-	} // End of method
-
 }

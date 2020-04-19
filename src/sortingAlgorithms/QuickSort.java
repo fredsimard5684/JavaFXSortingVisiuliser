@@ -183,19 +183,18 @@ public class QuickSort extends SortingAlgorithms {
 
 	} // End of method
 
-	@Override
 	// Set the task on finished, on running and on cancelled
-	protected void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
+	private void setTaskStatus(Task<Void> task, AnchorPane titlePane, FlowPane flowPane, AnchorPane mainPane) {
 		task.setOnRunning(e -> {
 			changeButtonStatus(true, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(true); // the cancel button is the fourth child of the main anchor
 															// pane
-			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, "COMPARE PIVOT", 4);
-			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, "SWAP", 5);
-			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, "SORTED", 6);
-			createLabelColor(mainPane, "-fx-background-color:turquoise", 436, "MEDIAN COMPARE", 7);
-			createLabelColor(mainPane, "-fx-background-color:gray", 556, "MANUAL COMPARE", 8);
-			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 676, "PIVOT", 9);
+			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, 110, "COMPARE PIVOT", 4);
+			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 196, 110, "SWAP", 5);
+			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, 110, "SORTED", 6);
+			createLabelColor(mainPane, "-fx-background-color:turquoise", 436, 110, "MEDIAN COMPARE", 7);
+			createLabelColor(mainPane, "-fx-background-color:gray", 556, 110, "MANUAL COMPARE", 8);
+			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 676, 110, "PIVOT", 9);
 			Main.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
@@ -275,33 +274,4 @@ public class QuickSort extends SortingAlgorithms {
 			} // End of switch
 		} // End of for
 	} // End of method
-
-	@Override
-	protected void changeButtonStatus(boolean isDisable, Task<Void> task, AnchorPane titlePane, FlowPane flowPane,
-			AnchorPane mainPane) {
-		for (int i = 0; i < titlePane.getChildren().size(); i++)
-			titlePane.getChildren().get(i).setDisable(isDisable);
-		((Button) mainPane.getChildren().get(3)).setOnAction(e -> {
-			task.cancel();
-			flowPane.getChildren().clear();
-			mainPane.getChildren().get(3).setVisible(false);
-		});
-
-	} // End of method
-
-	@Override
-	protected void createLabelColor(AnchorPane mainPane, String color, double layoutX, String text, int childPosition) {
-		Label label = new Label();
-		label.setLayoutX(layoutX);
-		label.setStyle(color);
-		label.setPrefWidth(110);
-		label.setPrefHeight(24);
-		label.setTextFill(Paint.valueOf("white"));
-		label.setAlignment(Pos.CENTER);
-		label.setText(text);
-		AnchorPane.setTopAnchor(label, 87.0);
-		mainPane.getChildren().add(childPosition, label);
-
-	} // End of method
-
 } // End of class
