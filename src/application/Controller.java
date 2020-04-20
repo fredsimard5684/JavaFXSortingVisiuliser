@@ -192,6 +192,8 @@ public class Controller implements Initializable {
                 quickSort.sort(diagramPane, titlePane, mainPane, algorithmSpeed);
                 break;
             case "Heap sort":
+                SortingAlgorithms heapSort = new HeapSort(copyArrayGenerated);
+                heapSort.sort(diagramPane, titlePane, mainPane,algorithmSpeed);
                 break;
             default:
                 break;

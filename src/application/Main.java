@@ -31,12 +31,7 @@ public class Main extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            scene.widthProperty().addListener(e -> {
-                System.out.println(scene.getWidth() + "Widht"); // Debug line
-            });
-            scene.heightProperty().addListener(e -> {
-                System.out.println(scene.getHeight()); // Debug line
-            });
+
             primaryStage.setMinWidth(1400);
             primaryStage.setMinHeight(900);
             primaryStage.setOnCloseRequest(e -> {
@@ -89,6 +84,7 @@ public class Main extends Application {
         alert.showAndWait();
     } // End of method
 
+    //TODO MAYBE CHANGE THE PLACE WHERE IT IS
     //Setting a timer
     public static void setTimer(AnchorPane mainPane, boolean isFinished) {
         if (isFinished) {
@@ -110,7 +106,7 @@ public class Main extends Application {
         };
         timer.scheduleAtFixedRate(timerTask, 0, 1);
     }
-
+    //TODO IDEM
     public static void createTextElapse(AnchorPane mainPane) {
         if (((AnchorPane) mainPane.getChildren().get(1)).getChildren().isEmpty()) {
             //Create a timer text
