@@ -195,21 +195,21 @@ public class QuickSort extends SortingAlgorithms {
 			createLabelColor(mainPane, "-fx-background-color:turquoise", 436, 110, "MEDIAN COMPARE", 7);
 			createLabelColor(mainPane, "-fx-background-color:gray", 556, 110, "MANUAL COMPARE", 8);
 			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 676, 110, "PIVOT", 9);
-			Main.setTimer(mainPane, false);
+			SortingAlgorithms.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			for (int i = 0; i < 6; i++)
 				mainPane.getChildren().remove(4);
-			Main.setTimer(mainPane, true);
-			Main.getTimeElapse().setVisible(false);
+			SortingAlgorithms.setTimer(mainPane, true);
+			SortingAlgorithms.getTimeElapse().setVisible(false);
 		});
 		task.setOnSucceeded(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(false);
 			for (int i = 0; i < 6; i++)
 				mainPane.getChildren().remove(4);
-			Main.setTimer(mainPane, true);
+			SortingAlgorithms.setTimer(mainPane, true);
 		});
 
 	} // End of method

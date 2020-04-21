@@ -23,8 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class Main extends Application {
-    private static Text timeElapse;
-    private static Timer timer;
+
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -83,48 +82,6 @@ public class Main extends Application {
 
         alert.showAndWait();
     } // End of method
-
-    //TODO MAYBE CHANGE THE PLACE WHERE IT IS
-    //Setting a timer
-    public static void setTimer(AnchorPane mainPane, boolean isFinished) {
-        if (isFinished) {
-            timer.cancel();
-            timer.purge();
-            return;
-        }
-        timer = new Timer();
-        createTextElapse(mainPane);
-        //Create a timer
-        //Create a timer task
-        final TimerTask timerTask = new TimerTask() {
-            int interval = 0;
-            @Override
-            public void run() {
-                Platform.runLater(() -> timeElapse.setText(String.format("Time: %d ms", interval)));
-                interval++;
-            }
-        };
-        timer.scheduleAtFixedRate(timerTask, 0, 1);
-    }
-    //TODO IDEM
-    public static void createTextElapse(AnchorPane mainPane) {
-        if (((AnchorPane) mainPane.getChildren().get(1)).getChildren().isEmpty()) {
-            //Create a timer text
-            timeElapse = new Text();
-            timeElapse.setFill(Paint.valueOf("white"));
-            timeElapse.setFont(Font.font("valera"));
-            timeElapse.setFont(Font.font(24));
-            timeElapse.setVisible(false);
-            AnchorPane.setBottomAnchor(timeElapse, 23.9765625);
-            AnchorPane.setLeftAnchor(timeElapse, 14.0);
-            ((AnchorPane)mainPane.getChildren().get(1)).getChildren().add(timeElapse);
-        }
-        if(!timeElapse.isVisible()) timeElapse.setVisible(true);
-    }
-
-    public static Text getTimeElapse() {
-        return timeElapse;
-    }
 
     public static void main(String[] args) {
         launch(args);

@@ -157,15 +157,15 @@ public class InsertionSort extends SortingAlgorithms {
 			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, 100, "SORTED", 8);
 			createLabelColor(mainPane, "-fx-background-color:#ABB37B", 436, 100, "SHIFT", 9);
 			createLabelColor(mainPane, "-fx-background-color:turquoise", 556,100, "CURRENT VALUE", 10);
-			Main.setTimer(mainPane, false);
+			SortingAlgorithms.setTimer(mainPane, false);
 		});
 
 		task.setOnCancelled(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			for (int i = 0; i < 7; i++)
 				mainPane.getChildren().remove(4);
-			Main.setTimer(mainPane, true);
-			Main.getTimeElapse().setVisible(false);
+			SortingAlgorithms.setTimer(mainPane, true);
+			SortingAlgorithms.getTimeElapse().setVisible(false);
 		});
 
 		task.setOnSucceeded(e -> {
@@ -173,7 +173,7 @@ public class InsertionSort extends SortingAlgorithms {
 			mainPane.getChildren().get(3).setVisible(false);
 			for (int i = 0; i < 7; i++)
 				mainPane.getChildren().remove(4);
-			Main.setTimer(mainPane, true);
+			SortingAlgorithms.setTimer(mainPane, true);
 		});
 	} // End of method
 

@@ -115,21 +115,21 @@ public class HeapSort extends SortingAlgorithms {
             createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 221, 110, "SWAP", 5);
             createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 341, 110, "SORTED", 6);
             createLabelColor(mainPane, "-fx-background-color:turquoise", 461, 110, "PARENT NODE", 7);
-            Main.setTimer(mainPane, false);
+            SortingAlgorithms.setTimer(mainPane, false);
         });
         task.setOnCancelled(e -> {
             changeButtonStatus(false, task, titlePane, flowPane, mainPane);
             for (int i = 0; i < 4; i++)
                 mainPane.getChildren().remove(4);
-            Main.setTimer(mainPane, true);
-            Main.getTimeElapse().setVisible(false);
+            SortingAlgorithms.setTimer(mainPane, true);
+            SortingAlgorithms.getTimeElapse().setVisible(false);
         });
         task.setOnSucceeded(e -> {
             changeButtonStatus(false, task, titlePane, flowPane, mainPane);
             mainPane.getChildren().get(3).setVisible(false);
             for (int i = 0; i < 4; i++)
                 mainPane.getChildren().remove(4);
-            Main.setTimer(mainPane, true);
+            SortingAlgorithms.setTimer(mainPane, true);
         });
 
     } // End of method

@@ -156,21 +156,21 @@ public class MergeSort extends SortingAlgorithms {
             createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 316, 110, "SORTED", 6);
             createLabelColor(mainPane, "-fx-background-color:turquoise", 436, 110, "ADD REMAIN VAL", 7);
 
-            Main.setTimer(mainPane, false);
+            SortingAlgorithms.setTimer(mainPane, false);
         });
         task.setOnCancelled(e -> {
             changeButtonStatus(false, task, titlePane, flowPane, mainPane);
             for (int i = 0; i < 4; i++)
                 mainPane.getChildren().remove(4);
-            Main.setTimer(mainPane, true);
-            Main.getTimeElapse().setVisible(false);
+            SortingAlgorithms.setTimer(mainPane, true);
+            SortingAlgorithms.getTimeElapse().setVisible(false);
         });
         task.setOnSucceeded(e -> {
             changeButtonStatus(false, task, titlePane, flowPane, mainPane);
             mainPane.getChildren().get(3).setVisible(false);
             for (int i = 0; i < 4; i++)
                 mainPane.getChildren().remove(4);
-            Main.setTimer(mainPane, true);
+            SortingAlgorithms.setTimer(mainPane, true);
         });
 
     } //End of method

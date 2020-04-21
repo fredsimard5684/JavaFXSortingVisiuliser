@@ -36,7 +36,7 @@ public class BubbleSort extends SortingAlgorithms {
 					arrayToSort[j] = arrayToSort[j + 1];
 					arrayToSort[j + 1] = temp;
 					animationLists.add(new AnimationList(j, j + 1, SortStatus.SWAP));
-					animationLists.add(new AnimationList(j, j + 1, SortStatus.COMPARE));
+					//animationLists.add(new AnimationList(j, j + 1, SortStatus.COMPARE));
 				}
 				animationLists.add(new AnimationList(j, j + 1, SortStatus.REMOVE_FOCUS));
 			} // End of internal loop
@@ -122,21 +122,21 @@ public class BubbleSort extends SortingAlgorithms {
 			createLabelColor(mainPane, "-fx-background-color:#58BC50", 76, 80, "COMPARE", 4);
 			createLabelColor(mainPane, "-fx-background-color:#FFB3B8", 176, 80, "SWAP", 5);
 			createLabelColor(mainPane, "-fx-background-color:#8BA9CC", 276, 80, "SORTED", 6);
-			Main.setTimer(mainPane, false);
+			SortingAlgorithms.setTimer(mainPane, false);
 		});
 		task.setOnCancelled(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			for (int i = 0; i < 3; i++)
 				mainPane.getChildren().remove(4);
-			Main.setTimer(mainPane, true);
-			Main.getTimeElapse().setVisible(false);
+			SortingAlgorithms.setTimer(mainPane, true);
+			SortingAlgorithms.getTimeElapse().setVisible(false);
 		});
 		task.setOnSucceeded(e -> {
 			changeButtonStatus(false, task, titlePane, flowPane, mainPane);
 			mainPane.getChildren().get(3).setVisible(false);
 			for (int i = 0; i < 3; i++)
 				mainPane.getChildren().remove(4);
-			Main.setTimer(mainPane, true);
+			SortingAlgorithms.setTimer(mainPane, true);
 		});
 	} // End of method
 } // End of class
