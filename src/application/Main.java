@@ -1,3 +1,7 @@
+//-------------------------------------------------------------------------------------
+/*
+* Auteur: Frédérick Simard
+*/
 package application;
 
 import java.io.PrintWriter;

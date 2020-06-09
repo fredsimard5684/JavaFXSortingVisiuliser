@@ -207,6 +207,7 @@ public class Controller implements Initializable {
         initialiseRectangleBars(generateArray((int) slider.getValue()));
     } // End of method
 
+    //Do a little fading animation
     @FXML
     public void fadeAnimation(MouseEvent e) {
         textButtons = (Text) e.getSource();
@@ -370,7 +371,5 @@ public class Controller implements Initializable {
             return false;
         }
     } // End of method
-
-
 } // End of class
 
